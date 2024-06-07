@@ -10,7 +10,7 @@
   },
   "servers": [
     {
-      "url": "http://sandbox.mintlify.com"
+      "url": "http://10.215.236.57:3000/v1/"
     }
   ],
   "security": [
@@ -19,19 +19,29 @@
     }
   ],
   "paths": {
-    "/hello":{
+   "/hello": {
       "get": {
-        "description": "Returns a hello world message",
+        "summary": "Echo a query parameter",
+        "description": "Returns the value of the 'echo' query parameter.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "echo",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The value to be echoed back in the response."
+          }
+        ],
         "responses": {
           "200": {
-            "description": "Helloworld response",
+            "description": "Successful response",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Plant"
-                  }
+                  "type": "string",
+                  "example": "Echo: your_query_value"
                 }
               }
             }
@@ -95,7 +105,7 @@
         "description": "How you tell us when a sale was made",
         "parameters": [
           {
-            "name": "limit",
+            "name": "echo",
             "in": "query",
             "description": "The maximum number of results to return",
             "schema": {
