@@ -59,7 +59,7 @@
         }
       }
     },
-    "/calculate":{
+    "/calculations":{
       "post": {
         "description": "Gives you back tax stuff",
         "requestBody": {
@@ -67,7 +67,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NewPlant"
+                "$ref": "#/components/schemas/CalculationRequest"
               }
             }
           },
@@ -81,7 +81,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Plant"
+                    "$ref": "#/components/schemas/CalculationResponse"
                   }
                 }
               }
@@ -177,6 +177,107 @@
   },
   "components": {
     "schemas": {
+      "CalculationRequest": {
+        "type": "object",
+        "properties": {
+          "address_details": {
+            "$ref": "#/components/schemas/AddressDetails"
+          },
+          "line_items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LineItem"
+            }
+          }
+        },
+        "required": ["address_details", "line_items"]
+      },
+      "AddressDetails": {
+        "type": "object",
+        "properties": {
+          "address": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "type": {
+            "type": "string",
+            "example": "billing"
+          }
+        },
+        "required": ["address", "type"]
+      },
+      "Address": {
+        "type": "object",
+        "properties": {
+          "line1": {
+            "type": "string",
+            "example": "3990 N County Rd 300 E"
+          },
+          "line2": {
+            "type": "string",
+            "example": ""
+          },
+          "city": {
+            "type": "string",
+            "example": "Danville"
+          },
+          "state": {
+            "type": "string",
+            "example": "IN"
+          },
+          "postal_code": {
+            "type": "string",
+            "example": "46122"
+          },
+          "country": {
+            "type": "string",
+            "example": "USA"
+          }
+        },
+        "required": ["line1", "city", "state", "postal_code", "country"]
+      },
+      "LineItem": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "number",
+            "example": 100
+          },
+          "product": {
+            "type": "string",
+            "example": "Widget"
+          },
+          "quantity": {
+            "type": "integer",
+            "example": 2
+          },
+          "tax_included": {
+            "type": "boolean",
+            "example": true
+          },
+          "tax_code": {
+            "type": "string",
+            "example": "TX123"
+          }
+        },
+        "required": ["amount", "product", "quantity", "tax_included", "tax_code"]
+      },
+      "CalculationResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "calculation_id": {
+            "type": "string",
+            "example": "calc_123456789"
+          },
+          "total_tax": {
+            "type": "number",
+            "example": 10.5
+          }
+        }
+      },
       "Plant": {
         "required": [
           "name"
