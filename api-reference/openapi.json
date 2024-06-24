@@ -59,7 +59,7 @@
         }
       }
     },
-    "/calculations":{
+    "/calculate":{
       "post": {
         "description": "Gives you back tax stuff",
         "requestBody": {
@@ -140,39 +140,6 @@
           }
         }
       }
-    },
-    "/plants/{id}": {
-      "delete": {
-        "description": "Deletes a single plant based on the ID supplied",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID of plant to delete",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Plant deleted",
-            "content": {}
-          },
-          "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
     }
   },
   "components": {
@@ -180,8 +147,63 @@
       "CalculationRequest": {
         "type": "object",
         "properties": {
+          "customer_details": {
+            "$ref": "#/components/schemas/CustomerDetails"
+          },
           "address_details": {
             "$ref": "#/components/schemas/AddressDetails"
+          },
+          "transaction_details": {
+            "$ref": "#/components/schemas/TransactionDetails"
+          }
+        },
+        "required": ["address_details"]
+      },
+      "CustomerDetails": {
+        "type": "object",
+        "properties": {
+          "vat_id": {
+            "type": "string",
+            "example": "123456789"
+          }
+        }
+      },
+      "AddressDetails": {
+        "type": "object",
+        "properties": {
+          "address_line_1": {
+            "type": "string",
+            "example": "3990 N County Rd 300 E"
+          },
+          "address_line_2": {
+            "type": "string",
+            "example": ""
+          },
+          "address_city": {
+            "type": "string",
+            "example": "Danville"
+          },
+          "address_province": {
+            "type": "string",
+            "example": "IN"
+          },
+          "address_postal_code": {
+            "type": "string",
+            "example": "46122"
+          },
+          "address_country": {
+            "type": "string",
+            "example": "USA"
+          }
+        },
+        "required": ["address_line_1", "address_city", "address_province", "address_postal_code", "address_country"]
+      },
+      "TransactionDetails": {
+        "type": "object",
+        "properties": {
+          "currency_code": {
+            "type": "string",
+            "example": "EUR"
           },
           "line_items": {
             "type": "array",
@@ -189,77 +211,28 @@
               "$ref": "#/components/schemas/LineItem"
             }
           }
-        },
-        "required": ["address_details", "line_items"]
-      },
-      "AddressDetails": {
-        "type": "object",
-        "properties": {
-          "address": {
-            "$ref": "#/components/schemas/Address"
-          },
-          "type": {
-            "type": "string",
-            "example": "billing"
-          }
-        },
-        "required": ["address", "type"]
-      },
-      "Address": {
-        "type": "object",
-        "properties": {
-          "line1": {
-            "type": "string",
-            "example": "3990 N County Rd 300 E"
-          },
-          "line2": {
-            "type": "string",
-            "example": ""
-          },
-          "city": {
-            "type": "string",
-            "example": "Danville"
-          },
-          "state": {
-            "type": "string",
-            "example": "IN"
-          },
-          "postal_code": {
-            "type": "string",
-            "example": "46122"
-          },
-          "country": {
-            "type": "string",
-            "example": "USA"
-          }
-        },
-        "required": ["line1", "city", "state", "postal_code", "country"]
+        }
       },
       "LineItem": {
         "type": "object",
         "properties": {
-          "amount": {
-            "type": "number",
-            "example": 100
-          },
-          "product": {
+          "product_name": {
             "type": "string",
             "example": "Widget"
           },
-          "quantity": {
-            "type": "integer",
-            "example": 2
+          "product_tax_code": {
+            "type": "string",
+            "example": "1234567890"
           },
-          "tax_included": {
+          "tax_included_in_amount": {
             "type": "boolean",
             "example": true
           },
-          "tax_code": {
-            "type": "string",
-            "example": "TX123"
+          "amount": {
+            "type": "number",
+            "example": 200
           }
-        },
-        "required": ["amount", "product", "quantity", "tax_included", "tax_code"]
+        }
       },
       "CalculationResponse": {
         "type": "object",
@@ -277,42 +250,6 @@
             "example": 10.5
           }
         }
-      },
-      "Plant": {
-        "required": [
-          "name"
-        ],
-        "type": "object",
-        "properties": {
-          "name": {
-            "description": "The name of the plant",
-            "type": "string"
-          },
-          "tag": {
-            "description": "Tag to specify the type",
-            "type": "string"
-          }
-        }
-      },
-      "NewPlant": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Plant"
-          },
-          {
-            "required": [
-              "id"
-            ],
-            "type": "object",
-            "properties": {
-              "id": {
-                "description": "Identification number of the plant",
-                "type": "integer",
-                "format": "int64"
-              }
-            }
-          }
-        ]
       },
       "Error": {
         "required": [
