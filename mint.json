@@ -63,7 +63,6 @@
     {
       "group": "Endpoint Examples",
       "pages": [
-        "api-reference/endpoint/hello",
         "api-reference/endpoint/calculate",
         "api-reference/endpoint/transactions"
       ]

@@ -19,46 +19,6 @@
     }
   ],
   "paths": {
-   "/hello": {
-      "get": {
-        "summary": "Echo a query parameter",
-        "description": "Returns the value of the 'echo' query parameter.",
-        "parameters": [
-          {
-            "in": "query",
-            "name": "echo",
-            "required": false,
-            "schema": {
-              "type": "string"
-            },
-            "description": "The value to be echoed back in the response."
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "string",
-                  "example": "Echo: your_query_value"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/calculate":{
       "post": {
         "description": "Gives you back tax stuff",
@@ -120,10 +80,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Plant"
-                  }
+                "type": "integer"
                 }
               }
             }
@@ -232,7 +189,13 @@
             "type": "number",
             "example": 200
           }
-        }
+        },
+        "required": [
+          "product_name",
+          "product_tax_code",
+          "tax_included_in_amount",
+          "amount"
+        ]
       },
       "CalculationResponse": {
         "type": "object",
