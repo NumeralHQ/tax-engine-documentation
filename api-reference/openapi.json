@@ -56,12 +56,26 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "path": { "type": "string" },
-                      "message": { "type": "string" }
+                      "error_code": { "type": "string" },
+                      "error_message": { "type": "string" },
+                      "error_meta": { 
+                        "type": "object",
+                        "properties": {
+                          "field": { "type": "string" },
+                          "expected": { "type": "string" },
+                          "received": { "type": "string" }
+                        }
+                      }
                     },
+                    "required": ["error_code", "error_message", "error_meta"],
                     "example": {
-                      "path": "address_details.address_country",
-                      "message": "Must be a valid ISO 3166-1 alpha-2 country code."
+                      "error_code": "missing_field",
+                      "error_message": "Field is required",
+                      "error_meta": {
+                        "field": "address_details.address_line_1",
+                        "expected": "string",
+                        "received": "undefined"
+                      }
                     }
                   }
                 }
@@ -305,10 +319,7 @@
         }
       },
       "Error": {
-        "required": [
-          "error",
-          "message"
-        ],
+        
         "type": "object",
         "properties": {
           "error": {
