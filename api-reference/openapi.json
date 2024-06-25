@@ -21,7 +21,7 @@
   "paths": {
     "/calculate":{
       "post": {
-        "description": "Gives you back tax stuff",
+        "description": "For a given product (`product_tax_code`) and shipping address destination, returns the applicable taxes. The `calculation_id` that is returned will be **required** to create a `transaction`.",
         "requestBody": {
           "description": "Cart to calculate tax for",
           "content": {
@@ -114,13 +114,14 @@
             "$ref": "#/components/schemas/TransactionDetails"
           }
         },
-        "required": ["address_details"]
+        "required": ["address_details", "transaction_details"]
       },
       "CustomerDetails": {
         "type": "object",
         "properties": {
           "vat_id": {
             "type": "string",
+            "description": "The optional tax ID of the customer. For example, a VAT ID or a company number.",
             "example": "123456789"
           }
         }
@@ -200,17 +201,93 @@
       "CalculationResponse": {
         "type": "object",
         "properties": {
-          "status": {
-            "type": "string",
-            "example": "success"
-          },
           "calculation_id": {
             "type": "string",
+            "description": "The ID of the calculation. This will be used to create a `transaction`.",
             "example": "calc_123456789"
           },
-          "total_tax": {
+          "object": {
+            "type": "string",
+            "description": "The type of object: `tax.calculation`.",
+            "example": "tax.calculation"
+          },
+          "formatted_address": {
+            "type": "string",
+            "description": "The formatted address of the transaction.",
+            "example": "3990 N County Rd 300 E, Danville, IN 46122, USA"
+          },
+          "line_items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "line_item_id": {
+                  "type": "string",
+                  "example": "line_987654321"
+                },
+                "product_name": {
+                  "type": "string",
+                  "example": "Widget"
+                },
+                "product_tax_code": {
+                  "type": "string",
+                  "example": "1234567890"
+                },
+                "tax_included_in_amount": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "tax_jurisdictions": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "tax_rate": {
+                        "type": "number",
+                        "example": 0.07
+                      },
+                      "rate_type": {
+                        "type": "string",
+                        "example": "percentage"
+                      },
+                      "jurisdiction_name": {
+                        "type": "string",
+                        "example": "State"
+                      }
+                    },
+                    "nullable": true
+                  }
+                },
+                "tax_amount": {
+                  "type": "number",
+                  "format": "int32",
+                  "example": 14
+                },
+                "amount_excluding_tax": {
+                  "type": "number",
+                  "format": "int32",
+                  "example": 200
+                },
+                "amount_including_tax": {
+                  "type": "number",
+                  "format": "int32",
+                  "example": 214
+                }
+              }
+            }
+          },
+          "total_tax_amount": {
             "type": "number",
-            "example": 10.5
+            "example": 14.5
+          },
+          "total_amount_excluding_tax": {
+            "type": "number",
+            "example": 200
+          },
+          "expires_at": {
+            "type": "string",
+            "description": "ISO 8601 datetime representing the date and time the tax rates are valid until.",
+            "example": "2024-12-31T23:59:59Z"
           }
         }
       },
