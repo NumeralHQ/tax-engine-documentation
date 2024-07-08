@@ -63,8 +63,9 @@
     {
       "group": "Endpoint Examples",
       "pages": [
-        "api-reference/endpoint/calculate",
-        "api-reference/endpoint/transactions"
+        "api-reference/endpoint/calculations",
+        "api-reference/endpoint/transactions",
+        "api-reference/endpoint/refunds"
       ]
     }
   ]

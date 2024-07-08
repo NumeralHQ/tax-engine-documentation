@@ -10,7 +10,7 @@
   },
   "servers": [
     {
-      "url": "http://10.215.236.57:3000/v1/"
+      "url": "http://10.215.236.57:3000/"
     }
   ],
   "security": [
@@ -19,7 +19,7 @@
     }
   ],
   "paths": {
-    "/calculate":{
+    "/tax/calculations":{
       "post": {
         "description": "For a given product (`product_tax_code`) and shipping address destination, returns the applicable taxes. The `calculation_id` that is returned will be **required** to create a `transaction`.",
         "requestBody": {
@@ -47,37 +47,12 @@
               }
             }
           },
-          "400": {
+          "500": {
             "description": "Validation error",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "error_code": { "type": "string" },
-                      "error_message": { "type": "string" },
-                      "error_meta": { 
-                        "type": "object",
-                        "properties": {
-                          "field": { "type": "string" },
-                          "expected": { "type": "string" },
-                          "received": { "type": "string" }
-                        }
-                      }
-                    },
-                    "required": ["error_code", "error_message", "error_meta"],
-                    "example": {
-                      "error_code": "missing_field",
-                      "error_message": "Field is required",
-                      "error_meta": {
-                        "field": "address_details.address_line_1",
-                        "expected": "string",
-                        "received": "undefined"
-                      }
-                    }
-                  }
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -85,9 +60,47 @@
         }
       }
     },
-    "/transactions": {
+    "/tax/transactions": {
       "post": {
         "description": "How you tell us when a sale was made",
+        "parameters": [
+          {
+            "name": "echo",
+            "in": "query",
+            "description": "The maximum number of results to return",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Plant response",
+            "content": {
+              "application/json": {
+                "schema": {
+                "type": "integer"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tax/refunds": {
+      "post": {
+        "description": "How you tell us when a refund was made",
         "parameters": [
           {
             "name": "echo",
@@ -209,6 +222,10 @@
             "type": "string",
             "example": "1234567890"
           },
+          "product_id":{
+            "type": "string",
+            "example": "45"
+          },
           "tax_included_in_amount": {
             "type": "boolean",
             "example": true
@@ -319,16 +336,39 @@
         }
       },
       "Error": {
-        
         "type": "object",
         "properties": {
-          "error": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string"
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "error_code": { "type": "string" },
+                "error_message": { "type": "string" },
+                "error_meta": { 
+                  "type": "object",
+                  "properties": {
+                    "field": { "type": "string" },
+                    "expected": { "type": "string" },
+                    "received": { "type": "string" }
+                  }
+                }
+              }
+            }
           }
+        },
+        "example": {
+          "errors": [
+            {
+              "error_code": "missing_field",
+              "error_message": "Field is required",
+              "error_meta": {
+                "field": "path.to.fieldname",
+                "expected": "string",
+                "received": "undefined"
+              }
+            }
+          ]
         }
       }
     },
