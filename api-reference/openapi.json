@@ -47,7 +47,7 @@
               }
             }
           },
-          "500": {
+          "400": {
             "description": "Validation error",
             "content": {
               "application/json": {
