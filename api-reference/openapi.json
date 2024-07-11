@@ -61,25 +61,27 @@
     },
     "/tax/transactions": {
       "post": {
-        "description": "How you tell us when a sale was made",
-        "parameters": [
-          {
-            "name": "echo",
-            "in": "query",
-            "description": "The maximum number of results to return",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
+        "description": "Once an order/transaction is placed, use this endpoint to create a `transaction`. This will be used to calculate taxes for the order/transaction.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransactionRequest"
+              }
             }
-          }
-        ],
+          },
+          "required": true
+        },
         "responses": {
           "200": {
-            "description": "Plant response",
+            "description": "Calculate response",
             "content": {
               "application/json": {
                 "schema": {
-                "type": "integer"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TransactionResponse"
+                  }
                 }
               }
             }
@@ -99,25 +101,24 @@
     },
     "/tax/refunds": {
       "post": {
-        "description": "How you tell us when a refund was made",
-        "parameters": [
-          {
-            "name": "echo",
-            "in": "query",
-            "description": "The maximum number of results to return",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
+        "description": "When a previously completed transaction is refunded, you'll need to create a refund object.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefundRequest"
+              }
             }
-          }
-        ],
+          },
+          "required": true
+        },
         "responses": {
           "200": {
-            "description": "Plant response",
+            "description": "Refund response",
             "content": {
               "application/json": {
                 "schema": {
-                "type": "integer"
+                  "$ref": "#/components/schemas/RefundResponse"
                 }
               }
             }
@@ -138,6 +139,136 @@
   },
   "components": {
     "schemas": {
+      "TransactionRequest": {
+        "type": "object",
+        "properties": {
+          "calculation_id": {
+            "type": "string",
+            "description": "The ID of the calculation that was used to create this transaction. We will pull sales data about the transaction from the original `calculation` object.",
+            "example": "calc_123456789"
+          },
+          "reference_order_id": {
+            "type": "string",
+            "description": "This is the ID of this order in your system. We'll use this ID for reconciliation and reporting",
+            "example": "343-45836"
+          },
+          "reference_payment_id": {
+            "type": "string",
+            "description": "If there is a single payment associated with this order, providing the `reference_payment_id` will help with currency exchange reconcilation.",
+            "example": "pay_123456789"
+          },
+          "transaction_timestamp": {
+            "type": "string",
+            "description": "ISO 8601 datetime representing the date and time the transaction was made.",
+            "example": "2024-02-15T12:00:00Z"
+          }
+        },
+        "required": ["calculation_id", "reference_order_id", "transaction_timestamp"]
+      },
+      "TransactionResponse": {
+        "type": "object",
+        "properties": {
+          "transaction_id": {
+            "type": "string",
+            "description": "The ID of the transaction. If you need to refund this transaction, you will be required to reference this id.",
+            "example": "tr_123456789"
+          },
+          "object": {
+            "type": "string",
+            "description": "The type of object: `tax.transaction`.",
+            "example": "tax.transaction"
+          },
+          "calculation_id":{
+            "type": "string",
+            "description": "The ID of the calculation that was used to create this transaction. We will pull sales data about the transaction from the original `calculation` object.",
+            "example": "calc_123456789"
+          },
+          "reference_order_id": {
+            "type": "string",
+            "description": "This is the ID of this order in your system. We'll use this ID for reconciliation and reporting",
+            "example": "343-45836"
+          },
+          "reference_payment_id": {
+            "type": "string",
+            "description": "If there is a single payment associated with this order, providing the `reference_payment_id` will help with currency exchange reconcilation.",
+            "example": "pay_123456789"
+          },
+          "transaction_timestamp": {
+            "type": "string",
+            "description": "ISO 8601 datetime representing the date and time the transaction was made.",
+            "example": "2024-02-15T12:00:00Z"
+          }
+        }
+      },
+      "RefundResponse": {
+        "type": "object",
+        "properties": {
+          "refund_id": {
+            "type": "string",
+            "description": "The ID of the refund. If you need to `reverse` this refund, you will be required to reference this id.",
+            "example": "ref_tr_123456789"
+          },
+          "object": {
+            "type": "string",
+            "description": "The type of object: `tax.refund`.",
+            "example": "tax.refund"
+          },
+          "refund_type": {
+            "type": "string",
+            "description": "This will be either `'full'` or `'partial'`.",
+            "example": "full"
+          },
+          "testmode": {
+            "type": "boolean",
+            "description": "This will be either `true` or `false`.",
+            "example": "false"
+          },
+          "refund_timestamp":{
+            "type": "string",
+            "description": "ISO 8601 datetime representing the date and time the refund was made.",
+            "example": "2024-02-15T12:00:00Z"
+          },
+          "line_items":{
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LineItem"
+            }
+          }
+        }
+      },
+      "RefundRequest": {
+        "type": "object",
+        "properties": {
+          "transaction_id": {
+            "type": "string",
+            "description": "The ID of the transaction to refund. This is the `transaction_id` returned from the `/transactions` creation call.",
+            "example": "tr_123456789"
+          },
+          "type": {
+            "type": "string",
+            "description": "This will be either `'full'` or `'partial'`. If `type='partial'`, you must also provide the line item(s) you wish to apply refunds against",
+            "example": "full"
+          },
+          "refund_timestamp": {
+            "type": "string",
+            "description": "ISO 8601 datetime representing the date and time the refund was made.",
+            "example": "2024-02-15T12:00:00Z"
+          },
+          "line_items": {
+            "type": "array",
+            "description": "If the refund is `type=partial`, you must provide the line item(s) you wish to apply refunds against. You must provide **one of** `product_id` OR `line_item_id`, so that we can identify the specific line item(s) to apply refunds against.",
+            "example": [
+              {
+                "line_item_id": "line_123456789",
+                "product_id": "prod_123456789",
+                "sale_amount_refunded": -1000,
+                "tax_amount_refunded": -100
+              }
+            ]
+          }
+        },
+        "required": ["transaction_id", "type", "refund_timestamp"]
+      },
       "CalculationRequest": {
         "type": "object",
         "properties": {
@@ -164,6 +295,41 @@
         }
       },
       "AddressDetails": {
+        "type": "object",
+        "description": "The address details of the transaction. You must provide **one of** `shipping_destination_address`, or `billing_address`.",
+        "properties": {
+          "shipping_origin_address":{
+            "description": "The address of a product's shipping origin. This is the address of the warehouse or inventory that holds the product and where it is shipped from.",
+            "$ref": "#/components/schemas/Address"
+          },
+          "shipping_destination_address":{
+            "description": "This is the address of the purchasing customer or where the product is shipped to.",
+            "$ref": "#/components/schemas/Address"
+          },
+          "billing_address":{
+            "description": "This is the address of the billing information for the customer.",
+            "$ref": "#/components/schemas/Address"
+          }
+        },
+        "required": ["shipping_destination_address"]
+      },
+      "TransactionDetails": {
+        "type": "object",
+        "properties": {
+          "currency_code": {
+            "type": "string",
+            "description": "The currency code of the transaction. Must be one of: EUR, RON, PLN, DKK, HUF, CZK, BGN, SEK",
+            "example": "EUR"
+          },
+          "line_items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LineItem"
+            }
+          }
+        }
+      },
+      "Address": {
         "type": "object",
         "properties": {
           "address_line_1": {
@@ -194,22 +360,6 @@
         },
         "required": ["address_line_1", "address_city", "address_province", "address_postal_code", "address_country"]
       },
-      "TransactionDetails": {
-        "type": "object",
-        "properties": {
-          "currency_code": {
-            "type": "string",
-            "description": "The currency code of the transaction. Must be one of: EUR, RON, PLN, DKK, HUF, CZK, BGN, SEK",
-            "example": "EUR"
-          },
-          "line_items": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/LineItem"
-            }
-          }
-        }
-      },
       "LineItem": {
         "type": "object",
         "properties": {
@@ -228,7 +378,7 @@
           },
           "product_id":{
             "type": "string",
-            "description": "The ID of the product from your system. This will be used to reference this line item for refunds if necessary. This field is optional if a line_item_id is provided",
+            "description": "The ID of the product from your system. This will be used to reference this line item for refunds if necessary. This field is optional if a `line_item_id` is provided",
             "example": "45"
           },
           "tax_included_in_amount": {
@@ -268,65 +418,7 @@
           "line_items": {
             "type": "array",
             "items": {
-              "type": "object",
-              "properties": {
-                "line_item_id": {
-                  "type": "string",
-                  "example": "line_987654321"
-                },
-                "product_id": {
-                  "type": "string",
-                  "example": "prod_987654321"
-                },
-                "product_name": {
-                  "type": "string",
-                  "example": "Widget"
-                },
-                "product_tax_code": {
-                  "type": "string",
-                  "example": "1234567890"
-                },
-                "tax_included_in_amount": {
-                  "type": "boolean",
-                  "example": true
-                },
-                "tax_jurisdictions": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "tax_rate": {
-                        "type": "number",
-                        "example": 0.07
-                      },
-                      "rate_type": {
-                        "type": "string",
-                        "example": "REDUCED_RATE"
-                      },
-                      "jurisdiction_name": {
-                        "type": "string",
-                        "example": "State"
-                      }
-                    },
-                    "nullable": true
-                  }
-                },
-                "tax_amount": {
-                  "type": "number",
-                  "format": "int32",
-                  "example": 14
-                },
-                "amount_excluding_tax": {
-                  "type": "number",
-                  "format": "int32",
-                  "example": 200
-                },
-                "amount_including_tax": {
-                  "type": "number",
-                  "format": "int32",
-                  "example": 214
-                }
-              }
+              "$ref": "#/components/schemas/TransactionLineItem"
             }
           },
           "total_tax_amount": {
@@ -341,6 +433,67 @@
             "type": "string",
             "description": "ISO 8601 datetime representing the date and time the tax rates are valid until.",
             "example": "2024-12-31T23:59:59Z"
+          }
+        }
+      },
+      "TransactionLineItem":{
+        "type": "object",
+        "properties": {
+          "line_item_id": {
+            "type": "string",
+            "example": "line_987654321"
+          },
+          "product_id": {
+            "type": "string",
+            "example": "prod_987654321"
+          },
+          "product_name": {
+            "type": "string",
+            "example": "Widget"
+          },
+          "product_tax_code": {
+            "type": "string",
+            "example": "1234567890"
+          },
+          "tax_included_in_amount": {
+            "type": "boolean",
+            "example": true
+          },
+          "tax_jurisdictions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "tax_rate": {
+                  "type": "number",
+                  "example": 0.07
+                },
+                "rate_type": {
+                  "type": "string",
+                  "example": "REDUCED_RATE"
+                },
+                "jurisdiction_name": {
+                  "type": "string",
+                  "example": "State"
+                }
+              },
+              "nullable": true
+            }
+          },
+          "tax_amount": {
+            "type": "number",
+            "format": "int32",
+            "example": 14
+          },
+          "amount_excluding_tax": {
+            "type": "number",
+            "format": "int32",
+            "example": 200
+          },
+          "amount_including_tax": {
+            "type": "number",
+            "format": "int32",
+            "example": 214
           }
         }
       },
