@@ -23,7 +23,6 @@
       "post": {
         "description": "For a given product (`product_tax_code`) and shipping address destination, returns the applicable taxes. The `calculation_id` that is returned will be **required** to create a `transaction`.",
         "requestBody": {
-          "description": "Cart to calculate tax for",
           "content": {
             "application/json": {
               "schema": {
@@ -190,7 +189,7 @@
           "address_country": {
             "type": "string",
             "description": "The country code of the transaction. Must be a valid ISO 3166-1 alpha-2 country code.",
-            "example": "USA"
+            "example": "US"
           }
         },
         "required": ["address_line_1", "address_city", "address_province", "address_postal_code", "address_country"]
@@ -214,6 +213,11 @@
       "LineItem": {
         "type": "object",
         "properties": {
+          "line_item_id": {
+            "type": "string",
+            "description": "The ID of the line item from your system. This will be used to reference this line item for refunds if necessary. This field is optional if a product_id is provided",
+            "example": "line_123456789"
+          },
           "product_name": {
             "type": "string",
             "example": "Widget"
@@ -224,6 +228,7 @@
           },
           "product_id":{
             "type": "string",
+            "description": "The ID of the product from your system. This will be used to reference this line item for refunds if necessary. This field is optional if a line_item_id is provided",
             "example": "45"
           },
           "tax_included_in_amount": {
@@ -269,6 +274,10 @@
                   "type": "string",
                   "example": "line_987654321"
                 },
+                "product_id": {
+                  "type": "string",
+                  "example": "prod_987654321"
+                },
                 "product_name": {
                   "type": "string",
                   "example": "Widget"
@@ -292,7 +301,7 @@
                       },
                       "rate_type": {
                         "type": "string",
-                        "example": "percentage"
+                        "example": "REDUCED_RATE"
                       },
                       "jurisdiction_name": {
                         "type": "string",
