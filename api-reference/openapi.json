@@ -135,6 +135,50 @@
           }
         }
       }
+    },
+    "/tax/refund_reversals": {
+      "post": {
+        "description": "If a refund is issued for a transaction, you can reverse the refund by creating a 'refund reversal' object. This creates an exact opposite of the original refund.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "refund_id": {
+                    "type": "string",
+                    "description": "The ID of the refund to reverse.",
+                    "example": "ref_tr_123456789"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Refund response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RefundResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -231,7 +275,7 @@
           "line_items":{
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/LineItem"
+              "$ref": "#/components/schemas/RefundTransactionLineItem"
             }
           }
         }
@@ -496,6 +540,36 @@
             "example": 214
           }
         }
+      },
+      "RefundTransactionLineItem": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/TransactionLineItem"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "amount_including_tax": {
+                "type": "number",
+                "format": "int32",
+                "example": -214,
+                "description": "The amount including tax, which should be a negative number for refunds."
+              },
+              "amount_excluding_tax": {
+                "type": "number",
+                "format": "int32",
+                "example": -200,
+                "description": "The amount excluding tax, which should be a negative number for refunds."
+              },
+              "tax_amount": {
+                "type": "number",
+                "format": "int32",
+                "example": -14,
+                "description": "The tax amount, which should be a negative number for refunds."
+              }
+            }
+          }
+        ]
       },
       "Error": {
         "type": "object",
