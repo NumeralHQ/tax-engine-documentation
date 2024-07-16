@@ -19,7 +19,7 @@
     }
   ],
   "paths": {
-    "/tax/calculations":{
+    "/tax/calculations": {
       "post": {
         "description": "For a given product (`product_tax_code`) and shipping address destination, returns the applicable taxes. The `calculation_id` that is returned will be **required** to create a `transaction`.",
         "requestBody": {
@@ -207,7 +207,11 @@
             "example": "2024-02-15T12:00:00Z"
           }
         },
-        "required": ["calculation_id", "reference_order_id", "transaction_timestamp"]
+        "required": [
+          "calculation_id",
+          "reference_order_id",
+          "transaction_timestamp"
+        ]
       },
       "TransactionResponse": {
         "type": "object",
@@ -222,7 +226,7 @@
             "description": "The type of object: `tax.transaction`.",
             "example": "tax.transaction"
           },
-          "calculation_id":{
+          "calculation_id": {
             "type": "string",
             "description": "The ID of the calculation that was used to create this transaction. We will pull sales data about the transaction from the original `calculation` object.",
             "example": "calc_123456789"
@@ -272,12 +276,12 @@
             "description": "This will be either `true` or `false`.",
             "example": "false"
           },
-          "refund_timestamp":{
+          "refund_timestamp": {
             "type": "string",
             "description": "ISO 8601 datetime representing the date and time the refund was made.",
             "example": "2024-02-15T12:00:00Z"
           },
-          "line_items":{
+          "line_items": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/RefundTransactionLineItem"
@@ -347,15 +351,15 @@
         "type": "object",
         "description": "The address details of the transaction. You must provide **one of** `shipping_destination_address`, or `billing_address`.",
         "properties": {
-          "shipping_origin_address":{
+          "shipping_origin_address": {
             "description": "The address of a product's shipping origin. This is the address of the warehouse or inventory that holds the product and where it is shipped from.",
             "$ref": "#/components/schemas/Address"
           },
-          "shipping_destination_address":{
+          "shipping_destination_address": {
             "description": "This is the address of the purchasing customer or where the product is shipped to.",
             "$ref": "#/components/schemas/Address"
           },
-          "billing_address":{
+          "billing_address": {
             "description": "This is the address of the billing information for the customer.",
             "$ref": "#/components/schemas/Address"
           }
@@ -407,14 +411,20 @@
             "example": "US"
           }
         },
-        "required": ["address_line_1", "address_city", "address_province", "address_postal_code", "address_country"]
+        "required": [
+          "address_line_1",
+          "address_city",
+          "address_province",
+          "address_postal_code",
+          "address_country"
+        ]
       },
       "LineItem": {
         "type": "object",
         "properties": {
           "line_item_id": {
             "type": "string",
-            "description": "The ID of the line item from your system. This will be used to reference this line item for refunds if necessary. This field is optional if a product_id is provided",
+            "description": "The ID of the line item from your system. This will be used to reference this line item for refunds if necessary. This field is optional and will be primarily used for your record keeping.",
             "example": "line_123456789"
           },
           "product_name": {
@@ -425,9 +435,9 @@
             "type": "string",
             "example": "1234567890"
           },
-          "product_id":{
+          "product_id": {
             "type": "string",
-            "description": "The ID of the product from your system. This will be used to reference this line item for refunds if necessary. This field is optional if a `line_item_id` is provided",
+            "description": "The product ID used to reference the product across your system and the numeral categorization taxonomy.",
             "example": "45"
           },
           "tax_included_in_amount": {
@@ -440,6 +450,7 @@
           }
         },
         "required": [
+          "product_id",
           "product_name",
           "product_tax_code",
           "tax_included_in_amount",
@@ -490,7 +501,7 @@
           }
         }
       },
-      "TransactionLineItem":{
+      "TransactionLineItem": {
         "type": "object",
         "properties": {
           "line_item_id": {
@@ -591,7 +602,7 @@
               "properties": {
                 "error_code": { "type": "string" },
                 "error_message": { "type": "string" },
-                "error_meta": { 
+                "error_meta": {
                   "type": "object",
                   "properties": {
                     "field": { "type": "string" },
