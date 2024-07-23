@@ -179,6 +179,114 @@
           }
         }
       }
+    },
+    "/tax/transaction/{transaction_id}": {
+      "get": {
+        "description": "Retrieve the details of a specific transaction using its ID.",
+        "parameters": [
+          {
+            "name": "transaction_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the transaction to retrieve.",
+            "example": "tr_172175669911564a621fc-ab56-441b-959f-7b2587cc72f2"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Transaction details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tax/product/{reference_product_id}": {
+      "get": {
+        "description": "Retrieve the details of a specific product using its ID.",
+        "parameters": [
+          {
+            "name": "product_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the product to retrieve.",
+            "example": "p-20506"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Product details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tax/products": {
+      "get": {
+        "description": "Retrieve the list of all products.",
+        "responses": {
+          "200": {
+            "description": "List of products",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -198,7 +306,7 @@
           },
           "reference_payment_id": {
             "type": "string",
-            "description": "If there is a single payment associated with this order, providing the `reference_payment_id` will help with currency exchange reconcilation.",
+            "description": "If there is a single payment associated with this order, providing the `reference_payment_id` will help with currency exchange reconciliation.",
             "example": "pay_123456789"
           },
           "transaction_processed_at": {
@@ -238,7 +346,7 @@
           },
           "reference_payment_id": {
             "type": "string",
-            "description": "If there is a single payment associated with this order, providing the `reference_payment_id` will help with currency exchange reconcilation.",
+            "description": "If there is a single payment associated with this order, providing the `reference_payment_id` will help with currency exchange reconciliation.",
             "example": "pay_123456789"
           },
           "transaction_processed_at": {
@@ -589,6 +697,41 @@
             }
           }
         ]
+      },
+      "ProductResponse": {
+        "type": "object",
+        "properties": {
+          "reference_product_id": {
+            "type": "string",
+            "description": "The ID of the product.",
+            "example": "p-20506"
+          },
+          "reference_product_name": {
+            "type": "string",
+            "description": "The name of the product.",
+            "example": "Product 100"
+          },
+          "product_category": {
+            "type": "string",
+            "description": "The category of the product.",
+            "example": "1"
+          },
+          "created_at": {
+            "type": "number",
+            "description": "Epoc datetime representing the date and time the product was created.",
+            "example": 1721694425.379
+          },
+          "updated_at": {
+            "type": "number",
+            "description": "Epoc datetime representing the date and time the product was last updated.",
+            "example": 1721694425.379
+          },
+          "testmode": {
+            "type": "boolean",
+            "description": "This will be either `true` or `false`.",
+            "example": "true"
+          }
+        }
       },
       "Error": {
         "type": "object",
