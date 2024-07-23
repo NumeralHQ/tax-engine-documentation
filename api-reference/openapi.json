@@ -224,7 +224,7 @@
         "description": "Retrieve the details of a specific product using its ID.",
         "parameters": [
           {
-            "name": "product_id",
+            "name": "reference_product_id",
             "in": "path",
             "required": true,
             "schema": {
@@ -271,6 +271,41 @@
                   "items": {
                     "$ref": "#/components/schemas/ProductResponse"
                   }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Create a new product.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Product creation response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductResponse"
                 }
               }
             }
@@ -697,6 +732,27 @@
             }
           }
         ]
+      },
+      "ProductRequest": {
+        "type": "object",
+        "properties": {
+          "reference_product_id": {
+            "type": "string",
+            "description": "The ID of the product.",
+            "example": "p-123456789"
+          },
+          "reference_product_name": {
+            "type": "string",
+            "description": "The name of the product.",
+            "example": "Red Shoes"
+          },
+          "product_category": {
+            "type": "string",
+            "description": "The category of the product.",
+            "example": "TPP_SHOES"
+          }
+        },
+        "required": ["reference_product_id", "reference_product_name", "product_category"]
       },
       "ProductResponse": {
         "type": "object",
