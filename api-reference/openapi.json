@@ -271,6 +271,29 @@
                   "items": {
                     "$ref": "#/components/schemas/ProductResponse"
                   }
+                },
+                "examples": {
+                  "multipleProducts": {
+                    "summary": "Multiple products example",
+                    "value": [
+                      {
+                        "reference_product_id": "p-20506",
+                        "reference_product_name": "Red Shoes",
+                        "product_category": "TPP_SHOES",
+                        "created_at": 1721694425,
+                        "updated_at": 1721694425,
+                        "testmode": false
+                      },
+                      {
+                        "reference_product_id": "p-20507",
+                        "reference_product_name": "Cell Phone",
+                        "product_category": "TPP_ELECTRONICS",
+                        "created_at": 1721694545,
+                        "updated_at": 1721694545,
+                        "testmode": false
+                      }
+                    ]
+                  }
                 }
               }
             }
@@ -765,7 +788,7 @@
           "reference_product_name": {
             "type": "string",
             "description": "The name of the product.",
-            "example": "Product 100"
+            "example": "Red Shoes"
           },
           "product_category": {
             "type": "string",
