@@ -770,17 +770,17 @@
           "product_category": {
             "type": "string",
             "description": "The category of the product.",
-            "example": "1"
+            "example": "TPP_SHOES"
           },
           "created_at": {
             "type": "number",
             "description": "Epoc datetime representing the date and time the product was created.",
-            "example": 1721694425.379
+            "example": 1721694425
           },
           "updated_at": {
             "type": "number",
             "description": "Epoc datetime representing the date and time the product was last updated.",
-            "example": 1721694425.379
+            "example": 1721694425
           },
           "testmode": {
             "type": "boolean",
