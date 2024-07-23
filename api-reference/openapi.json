@@ -21,7 +21,7 @@
   "paths": {
     "/tax/calculations": {
       "post": {
-        "description": "For a given product (`product_tax_code`) and shipping address destination, returns the applicable taxes. The `calculation_id` that is returned will be **required** to create a `transaction`.",
+        "description": "For a given product (`reference_product_id`) and address destination, it returns the applicable taxes. The `calculation_id` that is returned will be **required** to create a `transaction`.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -201,16 +201,16 @@
             "description": "If there is a single payment associated with this order, providing the `reference_payment_id` will help with currency exchange reconcilation.",
             "example": "pay_123456789"
           },
-          "transaction_timestamp": {
-            "type": "string",
-            "description": "ISO 8601 datetime representing the date and time the transaction was made.",
-            "example": "2024-02-15T12:00:00Z"
+          "transaction_processed_at": {
+            "type": "number",
+            "description": "Epoc datetime representing the date and time the transaction was made.",
+            "example": 1714787673
           }
         },
         "required": [
           "calculation_id",
           "reference_order_id",
-          "transaction_timestamp"
+          "transaction_processed_at"
         ]
       },
       "TransactionResponse": {
@@ -241,10 +241,10 @@
             "description": "If there is a single payment associated with this order, providing the `reference_payment_id` will help with currency exchange reconcilation.",
             "example": "pay_123456789"
           },
-          "transaction_timestamp": {
-            "type": "string",
-            "description": "ISO 8601 datetime representing the date and time the transaction was made.",
-            "example": "2024-02-15T12:00:00Z"
+          "transaction_processed_at": {
+            "type": "number",
+            "description": "Epoc datetime representing the date and time the transaction was made.",
+            "example": 1714787673
           },
           "testmode": {
             "type": "boolean",
@@ -276,10 +276,10 @@
             "description": "This will be either `true` or `false`.",
             "example": "false"
           },
-          "refund_timestamp": {
-            "type": "string",
-            "description": "ISO 8601 datetime representing the date and time the refund was made.",
-            "example": "2024-02-15T12:00:00Z"
+          "refund_processed_at": {
+            "type": "number",
+            "description": "Epoc datetime representing the date and time the refund was made.",
+            "example": 1714787673
           },
           "line_items": {
             "type": "array",
@@ -302,10 +302,10 @@
             "description": "This will be either `'full'` or `'partial'`. If `type='partial'`, you must also provide the line item(s) you wish to apply refunds against",
             "example": "full"
           },
-          "refund_timestamp": {
-            "type": "string",
-            "description": "ISO 8601 datetime representing the date and time the refund was made.",
-            "example": "2024-02-15T12:00:00Z"
+          "refund_processed_at": {
+            "type": "number",
+            "description": "Epoc datetime representing the date and time the refund was made.",
+            "example": 1714787673
           },
           "line_items": {
             "type": "array",
@@ -313,14 +313,14 @@
             "example": [
               {
                 "line_item_id": "line_123456789",
-                "product_id": "prod_123456789",
+                "reference_product_id": "p-1233543",
                 "sale_amount_refunded": -1000,
                 "tax_amount_refunded": -100
               }
             ]
           }
         },
-        "required": ["transaction_id", "type", "refund_timestamp"]
+        "required": ["transaction_id", "type", "refund_processed_at"]
       },
       "CalculationRequest": {
         "type": "object",
@@ -328,50 +328,55 @@
           "customer_details": {
             "$ref": "#/components/schemas/CustomerDetails"
           },
-          "address_details": {
-            "$ref": "#/components/schemas/AddressDetails"
+          "origin_address": {
+            "description": "The address of a product's shipping origin. This is the address of the warehouse or inventory that holds the product and where it is shipped from. **This is not required**",
+            "$ref": "#/components/schemas/Address"
           },
           "transaction_details": {
             "$ref": "#/components/schemas/TransactionDetails"
           }
         },
-        "required": ["address_details", "transaction_details"]
+        "required": ["customer_details", "transaction_details"]
       },
       "CustomerDetails": {
         "type": "object",
         "properties": {
-          "vat_id": {
-            "type": "string",
-            "description": "The optional tax ID of the customer. For example, a VAT ID or a company number.",
-            "example": "123456789"
+          "address": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Address"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "address_type": {
+                    "type": "string",
+                    "description": "The type of address. Must be one of: `shipping`, `billing`.",
+                    "example": "shipping"
+                  }
+                },
+                "required": ["destination_type"]
+              }
+            ]
           }
         }
-      },
-      "AddressDetails": {
-        "type": "object",
-        "description": "The address details of the transaction. You must provide **one of** `shipping_destination_address`, or `billing_address`.",
-        "properties": {
-          "shipping_origin_address": {
-            "description": "The address of a product's shipping origin. This is the address of the warehouse or inventory that holds the product and where it is shipped from.",
-            "$ref": "#/components/schemas/Address"
-          },
-          "shipping_destination_address": {
-            "description": "This is the address of the purchasing customer or where the product is shipped to.",
-            "$ref": "#/components/schemas/Address"
-          },
-          "billing_address": {
-            "description": "This is the address of the billing information for the customer.",
-            "$ref": "#/components/schemas/Address"
-          }
-        },
-        "required": ["shipping_destination_address"]
       },
       "TransactionDetails": {
         "type": "object",
         "properties": {
-          "currency_code": {
+          "customer_currency_code": {
             "type": "string",
             "description": "The currency code of the transaction. Must be one of: EUR, RON, PLN, DKK, HUF, CZK, BGN, SEK",
+            "example": "EUR"
+          },
+          "filing_currency_code": {
+            "type": "string",
+            "description": "The currency code of the filing that will be used to remit taxes collected on this transaction. Must be one of: EUR, RON, PLN, DKK, HUF, CZK, BGN, SEK",
+            "example": "EUR"
+          },
+           "functional_currency_code": {
+            "type": "string",
+            "description": "The currency code of the that will be used to report on and display this transaction in all dashboard views. Must be one of: EUR, RON, PLN, DKK, HUF, CZK, BGN, SEK",
             "example": "EUR"
           },
           "line_items": {
@@ -380,7 +385,8 @@
               "$ref": "#/components/schemas/LineItem"
             }
           }
-        }
+        },
+        "required": ["customer_currency_code", "filing_currency_code", "functional_currency_code", "line_items"]
       },
       "Address": {
         "type": "object",
@@ -427,32 +433,24 @@
             "description": "The ID of the line item from your system. This will be used to reference this line item for refunds if necessary. This field is optional and will be primarily used for your record keeping.",
             "example": "line_123456789"
           },
-          "product_name": {
+          "reference_product_id": {
             "type": "string",
-            "example": "Widget"
-          },
-          "product_tax_code": {
-            "type": "string",
-            "example": "1234567890"
-          },
-          "product_id": {
-            "type": "string",
-            "description": "The product ID used to reference the product across your system and the numeral categorization taxonomy.",
-            "example": "45"
+            "description": "The product ID is used to uniquely reference this product in **your** system as well as the Numeral categorization taxonomy. This ID will be used to determine which tax category to apply.",
+            "example": "p-1233543"
           },
           "tax_included_in_amount": {
             "type": "boolean",
+            "description": "Is the tax included in the amount?",
             "example": true
           },
           "amount": {
             "type": "number",
+            "description": "The base price of this line item. If there are more than 1 unit of this product being sold, combine the prices.",
             "example": 200
           }
         },
         "required": [
-          "product_id",
-          "product_name",
-          "product_tax_code",
+          "reference_product_id",
           "tax_included_in_amount",
           "amount"
         ]
@@ -490,9 +488,9 @@
             "example": 200
           },
           "expires_at": {
-            "type": "string",
-            "description": "ISO 8601 datetime representing the date and time the tax rates are valid until.",
-            "example": "2024-12-31T23:59:59Z"
+            "type": "number",
+            "description": "Epoc datetime representing the date and time the tax rates are valid until.",
+            "example": 1714787673
           },
           "testmode": {
             "type": "boolean",
@@ -508,11 +506,11 @@
             "type": "string",
             "example": "line_987654321"
           },
-          "product_id": {
+          "reference_product_id": {
             "type": "string",
-            "example": "prod_987654321"
+            "example": "p-1233543"
           },
-          "product_name": {
+          "reference_product_name": {
             "type": "string",
             "example": "Widget"
           },
