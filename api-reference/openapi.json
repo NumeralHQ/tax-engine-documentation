@@ -736,6 +736,10 @@
             "type": "number",
             "example": 200
           },
+          "total_amount_including_tax": {
+            "type": "number",
+            "example": 214.5
+          },
           "expires_at": {
             "type": "number",
             "description": "Epoc datetime representing the date and time the tax rates are valid until.",
