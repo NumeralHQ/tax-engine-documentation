@@ -219,6 +219,45 @@
         }
       }
     },
+    "/tax/transaction/{transaction_ID}": {
+      "delete": {
+        "description": "Delete a specific transaction using its ID.",
+        "parameters": [
+          {
+            "name": "transaction_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the transaction to delete.",
+            "example": "tr_1721782517712b5926847-d313-4721-9ee2-f8bde575d80b"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Transaction deletion response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/tax/product/{reference_product_id}": {
       "get": {
         "description": "Retrieve the details of a specific product using its ID.",
@@ -241,6 +280,45 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProductResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tax/product/{reference_product_ID}": {
+      "delete": {
+        "description": "Delete a specific product using its id.",
+        "parameters": [
+          {
+            "name": "reference_product_ID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the product to delete.",
+            "example": "p-309"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Product deletion response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteResponse"
                 }
               }
             }
@@ -809,6 +887,26 @@
             "type": "boolean",
             "description": "This will be either `true` or `false`.",
             "example": "true"
+          }
+        }
+      },
+      "DeleteResponse": {
+        "type": "object",
+        "properties": {
+          "request_id": {
+            "type": "string",
+            "description": "The request ID of the delete request.",
+            "example": "req_1721782604158421ac581-3dc8-4879-a7ad-670eebee81e0"
+          },
+          "object": {
+            "type": "string",
+            "description": "The type of object deleted.",
+            "example": "tax.transaction"
+          },
+          "deleted_at": {
+            "type": "number",
+            "description": "Epoc datetime representing the date and time the object was deleted.",
+            "example": 1721782604
           }
         }
       },
