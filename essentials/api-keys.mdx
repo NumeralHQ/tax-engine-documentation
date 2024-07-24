@@ -1,88 +1,31 @@
 ---
 title: "API Keys"
-description: "Text, title, and styling in standard markdown"
-icon: "text-size"
+icon: "key"
 ---
 
-## Titles
+### API Key Structure and Interpretation
 
-Best used for section headers.
+The API key structure for NumeralHQ's services follows a specific pattern that ensures both security and clarity. The structure is defined as `{exposure}_{environment}_{identifier}`, and each component has a distinct purpose. Understanding these components is crucial for properly managing and utilizing the API keys.
 
-```md
-## Titles
-```
+#### Components of the API Key
 
-### Subtitles
+1. **Exposure**: This part of the key indicates the level of exposure or accessibility of the key.
 
-Best use to subsection headers.
+   - `sk`: This stands for `secret_key`. A secret key must be kept secure and should only be used on the server-side. It should never be exposed in client-side code or any public-facing part of your application. Secret keys are necessary for operations that require secure access to NumeralHQ’s APIs.
 
-```md
-### Subtitles
-```
+2. **Environment**: This part of the key specifies the operational environment where the key will be used.
 
-<Tip>
+   - `prod`: Indicates that the key is for the production environment. Keys used in this environment handle live traffic, and all transactions recorded will incur charges and tax remittance.
+   - `test`: Indicates that the key is for the test or staging environment. This environment is used for development and testing purposes. Transactions recorded with test keys will not incur any charges or tax remittance.
 
-Each **title** and **subtitle** creates an anchor and also shows up on the table of contents on the right.
+3. **Identifier**: This is a unique string of characters that differentiates each key. The identifier ensures that each key is unique, even if the exposure and environment parts are the same.
 
-</Tip>
+#### Example and Usage
 
-## Text Formatting
+Consider the API key example: `sk_prod_23dvve554h65yegwf23wr4r5er`. Here’s how to interpret it:
 
-We support most markdown formatting. Simply add `**`, `_`, or `~` around text to format it.
+- `sk`: This is a secret key, meaning it should never be exposed in client-side code or any public-facing part of your application.
+- `prod`: This key is intended for the production environment, implying it will handle live traffic and associated transactions will be billed and taxed.
+- `23dvve554h65yegwf23wr4r5er`: This unique identifier ensures the key is distinct and can be tracked and managed separately from other keys.
 
-| Style         | How to write it   | Result          |
-| ------------- | ----------------- | --------------- |
-| Bold          | `**bold**`        | **bold**        |
-| Italic        | `_italic_`        | _italic_        |
-| Strikethrough | `~strikethrough~` | ~strikethrough~ |
-
-You can combine these. For example, write `**_bold and italic_**` to get **_bold and italic_** text.
-
-You need to use HTML to write superscript and subscript text. That is, add `<sup>` or `<sub>` around your text.
-
-| Text Size   | How to write it          | Result                 |
-| ----------- | ------------------------ | ---------------------- |
-| Superscript | `<sup>superscript</sup>` | <sup>superscript</sup> |
-| Subscript   | `<sub>subscript</sub>`   | <sub>subscript</sub>   |
-
-## Linking to Pages
-
-You can add a link by wrapping text in `[]()`. You would write `[link to google](https://google.com)` to [link to google](https://google.com).
-
-Links to pages in your docs need to be root-relative. Basically, you should include the entire folder path. For example, `[link to text](/writing-content/text)` links to the page "Text" in our components section.
-
-Relative links like `[link to text](../text)` will open slower because we cannot optimize them as easily.
-
-## Blockquotes
-
-### Singleline
-
-To create a blockquote, add a `>` in front of a paragraph.
-
-> Dorothy followed her through many of the beautiful rooms in her castle.
-
-```md
-> Dorothy followed her through many of the beautiful rooms in her castle.
-```
-
-### Multiline
-
-> Dorothy followed her through many of the beautiful rooms in her castle.
->
-> The Witch bade her clean the pots and kettles and sweep the floor and keep the fire fed with wood.
-
-```md
-> Dorothy followed her through many of the beautiful rooms in her castle.
->
-> The Witch bade her clean the pots and kettles and sweep the floor and keep the fire fed with wood.
-```
-
-### LaTeX
-
-Mintlify supports [LaTeX](https://www.latex-project.org) through the Latex component.
-
-<Latex>8 x (vk x H1 - H2) = (0,1)</Latex>
-
-```md
-<Latex>8 x (vk x H1 - H2) = (0,1)</Latex>
-```
+By adhering to this structured format, NumeralHQ ensures that API keys are easily identifiable and managed according to their intended use, enhancing both security and operational efficiency.

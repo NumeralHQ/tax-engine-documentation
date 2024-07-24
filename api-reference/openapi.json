@@ -389,7 +389,7 @@
         }
       },
       "post": {
-        "description": "Create a new product.",
+        "description": "Create a new product. By creating a product using a `reference_product_id` you tell numeral how to categorize each of the items you sell. You will reference this `reference_product_id` when [calculating taxes](/api-reference/endpoint/calculations). **It is required to create a product before you can calculate taxes against it**",
         "requestBody": {
           "content": {
             "application/json": {

@@ -49,8 +49,7 @@
       "group": "Essentials",
       "pages": [
         "essentials/api-keys",
-        "essentials/product-categories",
-        "essentials/requests"
+        "essentials/product-categories"
       ]
     },
     {
