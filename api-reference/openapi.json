@@ -217,9 +217,7 @@
             }
           }
         }
-      }
-    },
-    "/tax/transaction/{transaction_ID}": {
+      },
       "delete": {
         "description": "Delete a specific transaction using its ID.",
         "parameters": [
@@ -240,7 +238,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DeleteResponse"
+                  "$ref": "#/components/schemas/DeleteTransactionResponse"
                 }
               }
             }
@@ -295,9 +293,7 @@
             }
           }
         }
-      }
-    },
-    "/tax/product/{reference_product_ID}": {
+      },
       "delete": {
         "description": "Delete a specific product using its id.",
         "parameters": [
@@ -318,7 +314,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DeleteResponse"
+                  "$ref": "#/components/schemas/DeleteProductResponse"
                 }
               }
             }
@@ -355,6 +351,8 @@
                     "summary": "Multiple products example",
                     "value": [
                       {
+                        "request_id": "req_172175669911564a621fc-ab56-441b-959f-7b2587cc72f2",
+                        "object": "tax.product",
                         "reference_product_id": "p-20506",
                         "reference_product_name": "Red Shoes",
                         "product_category": "TPP_SHOES",
@@ -363,6 +361,8 @@
                         "testmode": false
                       },
                       {
+                        "request_id": "req_172175669911564a621fc-ab56-441b-959f-7b2587cc72f2",
+                        "object": "tax.product",
                         "reference_product_id": "p-20507",
                         "reference_product_name": "Cell Phone",
                         "product_category": "TPP_ELECTRONICS",
@@ -460,6 +460,11 @@
       "TransactionResponse": {
         "type": "object",
         "properties": {
+          "request_id": {
+            "type": "string",
+            "description": "The request ID of the create request.",
+            "example": "req_1721782604158421ac581-3dc8-4879-a7ad-670eebee81e0"
+          },
           "transaction_id": {
             "type": "string",
             "description": "The ID of the transaction. If you need to refund this transaction, you will be required to reference this id.",
@@ -858,6 +863,16 @@
       "ProductResponse": {
         "type": "object",
         "properties": {
+          "request_id": {
+            "type": "string",
+            "description": "The request ID of the create request.",
+            "example": "req_1721782604158421ac581-3dc8-4879-a7ad-670eebee81e0"
+          },
+          "object": {
+            "type": "string",
+            "description": "The type of object: `tax.product`.",
+            "example": "tax.product"
+          },
           "reference_product_id": {
             "type": "string",
             "description": "The ID of the product.",
@@ -890,7 +905,7 @@
           }
         }
       },
-      "DeleteResponse": {
+      "DeleteTransactionResponse": {
         "type": "object",
         "properties": {
           "request_id": {
@@ -902,6 +917,26 @@
             "type": "string",
             "description": "The type of object deleted.",
             "example": "tax.transaction"
+          },
+          "deleted_at": {
+            "type": "number",
+            "description": "Epoc datetime representing the date and time the object was deleted.",
+            "example": 1721782604
+          }
+        }
+      },
+      "DeleteProductResponse": {
+        "type": "object",
+        "properties": {
+          "request_id": {
+            "type": "string",
+            "description": "The request ID of the delete request.",
+            "example": "req_1721782604158421ac581-3dc8-4879-a7ad-670eebee81e0"
+          },
+          "object": {
+            "type": "string",
+            "description": "The type of object deleted.",
+            "example": "tax.product"
           },
           "deleted_at": {
             "type": "number",
