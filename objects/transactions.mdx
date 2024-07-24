@@ -1,0 +1,19 @@
+---
+title: "Transactions"
+description: "Transactions"
+icon: "bag-shopping"
+---
+
+## What is a Transaction?
+
+The `transaction` object is used to represent an actual sale or completed purchase in your system. We will determine taxes owed based on all `transaction`s that take place during a time period for any specific taxing jurisdiction.
+
+```json
+{
+  "foo": "bar"
+}
+```
+
+## When to create Transactions
+
+Upon a successful purchase of a product, you will want to create a `transaction` object. This transaction will tell Numeral which products were purchased, when the purchase happened, the total amount of the purchase, and the total tax owed for the purchase.

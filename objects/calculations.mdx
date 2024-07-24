@@ -1,0 +1,44 @@
+---
+title: "Calculations"
+description: "Calculations"
+icon: "calculator"
+---
+
+## What is a Calculation
+
+The `calculation` object is used to represent all of the tax calculations that _might eventually_ be used to create a real-world order or transaction. This includes taxes on a per-line item basis as well as totals for the order as a whole. Here's an example of what information exists within a calculation:
+
+```json
+{
+  "calculation_id": "calc_123456789",
+  "object": "tax.calculation",
+  "line_items": [
+    {
+      "line_item_id": "line_987654321",
+      "reference_product_id": "p-1233543",
+      "reference_product_name": "Widget",
+      "product_tax_code": "1234567890",
+      "tax_included_in_amount": true,
+      "tax_jurisdictions": [
+        {
+          "tax_rate": 0.07,
+          "rate_type": "REDUCED_RATE",
+          "jurisdiction_name": "State"
+        }
+      ],
+      "tax_amount": 14,
+      "amount_excluding_tax": 200,
+      "amount_including_tax": 214
+    }
+  ],
+  "total_tax_amount": 14.5,
+  "total_amount_excluding_tax": 200,
+  "expires_at": 1714787673,
+  "testmode": "false"
+}
+```
+
+## When to use Calculations
+
+Let's say that you have a cart page within an ecommerce checkout experience. As your customer is modifying their purchase, changing their shipping addres, etc, you will want to show them the most accurate
+taxes for their purchase in as close to real time as possible. To do this you will submit a `POST` to `/tax/calculations` and then update the results on the page each time the customer modifies their purchase.

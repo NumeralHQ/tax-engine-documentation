@@ -51,7 +51,16 @@
       "group": "Essentials",
       "pages": [
         "essentials/api-keys",
+        "essentials/product-categories",
         "essentials/requests"
+      ]
+    },
+    {
+      "group": "Objects",
+      "pages": [
+        "objects/calculations",
+        "objects/transactions",
+        "objects/products"
       ]
     },
     {
