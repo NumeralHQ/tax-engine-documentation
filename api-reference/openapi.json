@@ -718,11 +718,6 @@
             "description": "The type of object: `tax.calculation`.",
             "example": "tax.calculation"
           },
-          "formatted_address": {
-            "type": "string",
-            "description": "The formatted address of the transaction.",
-            "example": "3990 N County Rd 300 E, Danville, IN 46122, USA"
-          },
           "line_items": {
             "type": "array",
             "items": {
@@ -756,22 +751,29 @@
       "TransactionLineItem": {
         "type": "object",
         "properties": {
-          "line_item_id": {
-            "type": "string",
-            "example": "line_987654321"
+          
+          "product":{
+            "type": "object",
+            "properties": {
+              "reference_product_name": {
+                "type": "string",
+                "example": "Widget"
+              },
+              "reference_line_item_id": {
+                "type": "string",
+                "example": "line_987654321"
+              },
+              "reference_product_id": {
+                "type": "string",
+                "example": "p-1233543"
+              },
+              "product_tax_code": {
+                "type": "string",
+                "example": "GENERAL_MERCHANDISE"
+              }
+            }
           },
-          "reference_product_id": {
-            "type": "string",
-            "example": "p-1233543"
-          },
-          "reference_product_name": {
-            "type": "string",
-            "example": "Widget"
-          },
-          "product_tax_code": {
-            "type": "string",
-            "example": "1234567890"
-          },
+          
           "tax_included_in_amount": {
             "type": "boolean",
             "example": true
