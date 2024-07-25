@@ -495,6 +495,21 @@
             "description": "Epoc datetime representing the date and time the transaction was made.",
             "example": 1714787673
           },
+          "customer_currency_code": {
+            "type": "string",
+            "description": "The currency code of the transaction.",
+            "example": "EUR"
+          },
+          "filing_currency_code": {
+            "type": "string",
+            "description": "The currency code of the filing that will be used to remit taxes collected on this transaction.",
+            "example": "EUR"
+          },
+          "functional_currency_code": {
+            "type": "string",
+            "description": "The currency code of the that will be used to report on and display this transaction in all dashboard views.",
+            "example": "EUR"
+          },
           "testmode": {
             "type": "boolean",
             "description": "This will be either `true` or `false`.",
