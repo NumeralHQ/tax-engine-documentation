@@ -698,9 +698,9 @@
       "LineItem": {
         "type": "object",
         "properties": {
-          "line_item_id": {
+          "reference_line_item_id": {
             "type": "string",
-            "description": "The ID of the line item from your system. This will be used to reference this line item for refunds if necessary. This field is optional and will be primarily used for your record keeping.",
+            "description": "The ID of the line item from your system. This field is optional and will be primarily used for your record keeping.",
             "example": "line_123456789"
           },
           "reference_product_id": {
@@ -742,7 +742,7 @@
           },
           "total_tax_amount": {
             "type": "number",
-            "example": 14.5
+            "example": 14.0
           },
           "total_amount_excluding_tax": {
             "type": "number",
@@ -750,7 +750,7 @@
           },
           "total_amount_including_tax": {
             "type": "number",
-            "example": 214.5
+            "example": 214
           },
           "expires_at": {
             "type": "number",
