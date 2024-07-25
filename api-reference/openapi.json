@@ -615,7 +615,7 @@
                 "properties": {
                   "address_type": {
                     "type": "string",
-                    "description": "The type of address. Must be one of: `shipping`, `billing`.",
+                    "description": "The type of address. Must be one of: `shipping`, `billing`. On most orders, `shipping` should be used as destination is the primary determination of tax in most states. `billing` will be used primarily if selling a digital product with no physical shipping component.",
                     "example": "shipping"
                   }
                 },
@@ -703,11 +703,7 @@
             "example": 200
           }
         },
-        "required": [
-          "reference_product_id",
-          "tax_included_in_amount",
-          "amount"
-        ]
+        "required": ["reference_product_id", "tax_included_in_amount", "amount"]
       },
       "CalculationResponse": {
         "type": "object",
@@ -867,7 +863,11 @@
             "example": "CLOTHING"
           }
         },
-        "required": ["reference_product_id", "reference_product_name", "product_category"]
+        "required": [
+          "reference_product_id",
+          "reference_product_name",
+          "product_category"
+        ]
       },
       "ProductResponse": {
         "type": "object",
