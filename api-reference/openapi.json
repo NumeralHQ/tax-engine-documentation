@@ -640,7 +640,7 @@
             }
           }
         },
-        "required": ["customer_currency_code", "filing_currency_code", "functional_currency_code", "line_items"]
+        "required": ["customer_currency_code", "line_items"]
       },
       "Address": {
         "type": "object",
