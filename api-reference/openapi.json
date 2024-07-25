@@ -355,7 +355,7 @@
                         "object": "tax.product",
                         "reference_product_id": "p-20506",
                         "reference_product_name": "Red Shoes",
-                        "product_category": "TPP_SHOES",
+                        "product_category": "GENERAL_MERCHANDISE",
                         "created_at": 1721694425,
                         "updated_at": 1721694425,
                         "testmode": false
@@ -365,7 +365,7 @@
                         "object": "tax.product",
                         "reference_product_id": "p-20507",
                         "reference_product_name": "Cell Phone",
-                        "product_category": "TPP_ELECTRONICS",
+                        "product_category": "GENERAL_MERCHANDISE",
                         "created_at": 1721694545,
                         "updated_at": 1721694545,
                         "testmode": false
@@ -859,7 +859,7 @@
           "product_category": {
             "type": "string",
             "description": "The category of the product.",
-            "example": "TPP_SHOES"
+            "example": "CLOTHING"
           }
         },
         "required": ["reference_product_id", "reference_product_name", "product_category"]
@@ -890,7 +890,7 @@
           "product_category": {
             "type": "string",
             "description": "The category of the product.",
-            "example": "TPP_SHOES"
+            "example": "CLOTHING"
           },
           "created_at": {
             "type": "number",
