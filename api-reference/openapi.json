@@ -618,16 +618,6 @@
             "description": "The currency code of the transaction. Must be one of: EUR, RON, PLN, DKK, HUF, CZK, BGN, SEK",
             "example": "EUR"
           },
-          "filing_currency_code": {
-            "type": "string",
-            "description": "The currency code of the filing that will be used to remit taxes collected on this transaction. Must be one of: EUR, RON, PLN, DKK, HUF, CZK, BGN, SEK",
-            "example": "EUR"
-          },
-           "functional_currency_code": {
-            "type": "string",
-            "description": "The currency code of the that will be used to report on and display this transaction in all dashboard views. Must be one of: EUR, RON, PLN, DKK, HUF, CZK, BGN, SEK",
-            "example": "EUR"
-          },
           "line_items": {
             "type": "array",
             "items": {
