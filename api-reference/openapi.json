@@ -628,11 +628,11 @@
             "description": "The address of a product's shipping origin. This is the address of the warehouse or inventory that holds the product and where it is shipped from. **This is not required**",
             "$ref": "#/components/schemas/Address"
           },
-          "transaction": {
-            "$ref": "#/components/schemas/TransactionDetails"
+          "order_details": {
+            "$ref": "#/components/schemas/OrderDetails"
           }
         },
-        "required": ["customer", "transaction"]
+        "required": ["customer", "order_details"]
       },
       "CustomerDetails": {
         "type": "object",
@@ -657,7 +657,7 @@
           }
         }
       },
-      "TransactionDetails": {
+      "OrderDetails": {
         "type": "object",
         "properties": {
           "customer_currency_code": {
