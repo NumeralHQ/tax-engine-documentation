@@ -38,10 +38,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/CalculationResponse"
-                  }
+                  "$ref": "#/components/schemas/CalculationResponse"
                 }
               }
             }
@@ -78,10 +75,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/TransactionResponse"
-                  }
+                  "$ref": "#/components/schemas/TransactionResponse"
                 }
               }
             }
@@ -341,36 +335,47 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ProductResponse"
+                  "type": "object",
+                  "properties": {
+                    "request_id": {
+                      "type": "string",
+                      "description": "The request ID of the list request.",
+                      "example": "req_172202248511336956665-8ad3-4afc-8aef-3038c5204cec"
+                    },
+                    "products": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ProductResponse"
+                      }
+                    }
                   }
                 },
                 "examples": {
                   "multipleProducts": {
                     "summary": "Multiple products example",
-                    "value": [
-                      {
-                        "request_id": "req_172175669911564a621fc-ab56-441b-959f-7b2587cc72f2",
-                        "object": "tax.product",
-                        "reference_product_id": "p-20506",
-                        "reference_product_name": "Red Shoes",
-                        "product_category": "GENERAL_MERCHANDISE",
-                        "created_at": 1721694425,
-                        "updated_at": 1721694425,
-                        "testmode": false
-                      },
-                      {
-                        "request_id": "req_172175669911564a621fc-ab56-441b-959f-7b2587cc72f2",
-                        "object": "tax.product",
-                        "reference_product_id": "p-20507",
-                        "reference_product_name": "Cell Phone",
-                        "product_category": "GENERAL_MERCHANDISE",
-                        "created_at": 1721694545,
-                        "updated_at": 1721694545,
-                        "testmode": false
-                      }
-                    ]
+                    "value": {
+                      "request_id": "req_172202248511336956665-8ad3-4afc-8aef-3038c5204cec",
+                      "products": [
+                        {
+                          "object": "tax.product",
+                          "reference_product_id": "p-20506",
+                          "reference_product_name": "Product 100",
+                          "product_category": "1",
+                          "created_at": 1721951003,
+                          "updated_at": 1721951003,
+                          "testmode": true
+                        },
+                        {
+                          "object": "tax.product",
+                          "reference_product_id": "p-20507",
+                          "reference_product_name": "Product 101",
+                          "product_category": "1",
+                          "created_at": 1721951003,
+                          "updated_at": 1721951003,
+                          "testmode": true
+                        }
+                      ]
+                    }
                   }
                 }
               }
