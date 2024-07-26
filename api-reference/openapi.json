@@ -292,7 +292,7 @@
         "description": "Delete a specific product using its id.",
         "parameters": [
           {
-            "name": "reference_product_ID",
+            "name": "reference_product_id",
             "in": "path",
             "required": true,
             "schema": {
