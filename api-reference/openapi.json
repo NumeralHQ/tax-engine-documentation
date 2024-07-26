@@ -660,6 +660,11 @@
             "description": "The currency code of the transaction. Must be one of: EUR, RON, PLN, DKK, HUF, CZK, BGN, SEK",
             "example": "EUR"
           },
+          "tax_included_in_amount": {
+            "type": "boolean",
+            "description": "For the line items in this transaction, does the amount include tax?",
+            "example": true
+          },
           "line_items": {
             "type": "array",
             "items": {
@@ -667,7 +672,7 @@
             }
           }
         },
-        "required": ["customer_currency_code", "line_items"]
+        "required": ["customer_currency_code", "tax_included_in_amount","line_items"]
       },
       "Address": {
         "type": "object",
@@ -719,18 +724,13 @@
             "description": "The product ID is used to uniquely reference this product in **your** system as well as the Numeral categorization taxonomy. This ID will be used to determine which tax category to apply.",
             "example": "p-1233543"
           },
-          "tax_included_in_amount": {
-            "type": "boolean",
-            "description": "Is the tax included in the amount?",
-            "example": true
-          },
           "amount": {
             "type": "number",
             "description": "The base price of this line item. If there are more than 1 unit of this product being sold, combine the prices.",
             "example": 200
           }
         },
-        "required": ["reference_product_id", "tax_included_in_amount", "amount"]
+        "required": ["reference_product_id", "amount"]
       },
       "CalculationResponse": {
         "type": "object",
@@ -750,6 +750,10 @@
             "items": {
               "$ref": "#/components/schemas/TransactionLineItem"
             }
+          },
+           "tax_included_in_amount": {
+            "type": "boolean",
+            "example": true
           },
           "total_tax_amount": {
             "type": "number",
@@ -799,10 +803,6 @@
                 "example": "GENERAL_MERCHANDISE"
               }
             }
-          },
-          "tax_included_in_amount": {
-            "type": "boolean",
-            "example": true
           },
           "tax_jurisdictions": {
             "type": "array",
