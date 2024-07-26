@@ -74,7 +74,7 @@
         },
         "responses": {
           "200": {
-            "description": "Calculate response",
+            "description": "Transaction response",
             "content": {
               "application/json": {
                 "schema": {
@@ -447,7 +447,7 @@
           },
           "transaction_processed_at": {
             "type": "number",
-            "description": "Epoc datetime representing the date and time the transaction was made.",
+            "description": "Epoch datetime representing the date and time the transaction was made.",
             "example": 1714787673
           }
         },
@@ -492,7 +492,7 @@
           },
           "transaction_processed_at": {
             "type": "number",
-            "description": "Epoc datetime representing the date and time the transaction was made.",
+            "description": "Epoch datetime representing the date and time the transaction was made.",
             "example": 1714787673
           },
           "customer_currency_code": {
@@ -509,6 +509,12 @@
             "type": "string",
             "description": "The currency code of the that will be used to report on and display this transaction in all dashboard views.",
             "example": "EUR"
+          },
+          "line_items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TransactionLineItem"
+            }
           },
           "testmode": {
             "type": "boolean",
@@ -542,7 +548,7 @@
           },
           "refund_processed_at": {
             "type": "number",
-            "description": "Epoc datetime representing the date and time the refund was made.",
+            "description": "Epoch datetime representing the date and time the refund was made.",
             "example": 1714787673
           },
           "line_items": {
@@ -568,7 +574,7 @@
           },
           "refund_processed_at": {
             "type": "number",
-            "description": "Epoc datetime representing the date and time the refund was made.",
+            "description": "Epoch datetime representing the date and time the refund was made.",
             "example": 1714787673
           },
           "line_items": {
@@ -754,7 +760,7 @@
           },
           "expires_at": {
             "type": "number",
-            "description": "Epoc datetime representing the date and time the tax rates are valid until.",
+            "description": "Epoch datetime representing the date and time the tax rates are valid until.",
             "example": 1714787673
           },
           "testmode": {
@@ -789,7 +795,6 @@
               }
             }
           },
-          
           "tax_included_in_amount": {
             "type": "boolean",
             "example": true
@@ -917,12 +922,12 @@
           },
           "created_at": {
             "type": "number",
-            "description": "Epoc datetime representing the date and time the product was created.",
+            "description": "Epoch datetime representing the date and time the product was created.",
             "example": 1721694425
           },
           "updated_at": {
             "type": "number",
-            "description": "Epoc datetime representing the date and time the product was last updated.",
+            "description": "Epoch datetime representing the date and time the product was last updated.",
             "example": 1721694425
           },
           "testmode": {
@@ -947,7 +952,7 @@
           },
           "deleted_at": {
             "type": "number",
-            "description": "Epoc datetime representing the date and time the object was deleted.",
+            "description": "Epoch datetime representing the date and time the object was deleted.",
             "example": 1721782604
           }
         }
@@ -967,7 +972,7 @@
           },
           "deleted_at": {
             "type": "number",
-            "description": "Epoc datetime representing the date and time the object was deleted.",
+            "description": "Epoch datetime representing the date and time the object was deleted.",
             "example": 1721782604
           }
         }
