@@ -641,7 +641,7 @@
                     "example": "shipping"
                   }
                 },
-                "required": ["destination_type"]
+                "required": ["address_type"]
               }
             ]
           }
