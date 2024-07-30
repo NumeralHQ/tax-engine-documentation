@@ -601,6 +601,11 @@
                 "description": "The amount of the sale that was refunded to the customer.",
                 "example": -200
               },
+              "quantity_refunded":{
+                "type": "number",
+                "description": "The quantity of this product being refunded.",
+                "example": 2
+              },
               "tax_amount_refunded":{
                 "type": "number",
                 "description": "The amount of the tax that was refunded to the customer.",
@@ -728,6 +733,11 @@
             "type": "number",
             "description": "The base price of this line item. If there are more than 1 unit of this product being sold, combine the prices.",
             "example": 200
+          },
+          "quantity": {
+            "type": "number",
+            "description": "The quantity of this product being sold.",
+            "example": 2
           }
         },
         "required": ["reference_product_id", "amount"]
@@ -825,6 +835,11 @@
               "nullable": true
             }
           },
+          "quantity": {
+            "type": "number",
+            "format": "int32",
+            "example": 2
+          },
           "tax_amount": {
             "type": "number",
             "format": "int32",
@@ -867,6 +882,12 @@
                 "format": "int32",
                 "example": -14,
                 "description": "The tax amount, which should be a negative number for refunds."
+              },
+              "quantity": {
+                "type": "number",
+                "format": "int32",
+                "example": 2,
+                "description": "The quantity of this product being refunded."
               }
             }
           }
