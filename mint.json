@@ -75,6 +75,7 @@
         "api-reference/endpoint/refund_reversals",
         "api-reference/endpoint/products",
         "api-reference/endpoint/get_transaction",
+        "api-reference/endpoint/get_refunds_for_transaction",
         "api-reference/endpoint/get_product",
         "api-reference/endpoint/get_products",
         "api-reference/endpoint/delete_transaction",

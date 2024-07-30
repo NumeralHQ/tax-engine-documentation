@@ -250,6 +250,57 @@
         }
       }
     },
+    "/tax/transaction/{transaction_id}/refunds": {
+      "get": {
+        "description": "Retrieve the list of refunds for a specific transaction using its ID.",
+        "parameters": [
+          {
+            "name": "transaction_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the transaction to retrieve refunds for."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of refunds for a specific transaction",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "request_id": {
+                      "type": "string",
+                      "description": "The request ID of the list request.",
+                      "example": "req_172202248511336956665-8ad3-4afc-8aef-3038c5204cec"
+                    },
+                    "refunds": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/RefundResponse"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/tax/product/{reference_product_id}": {
       "get": {
         "description": "Retrieve the details of a specific product using its ID.",
