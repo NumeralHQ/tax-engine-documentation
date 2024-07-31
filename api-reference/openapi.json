@@ -561,11 +561,6 @@
             "description": "The currency code of the filing that will be used to remit taxes collected on this transaction.",
             "example": "EUR"
           },
-          "functional_currency_code": {
-            "type": "string",
-            "description": "The currency code of the that will be used to report on and display this transaction in all dashboard views.",
-            "example": "EUR"
-          },
           "line_items": {
             "type": "array",
             "items": {
@@ -636,35 +631,38 @@
           "line_items": {
             "type": "object",
             "description": "If the refund is `type=partial`, you must provide the line item(s) you wish to apply refunds against. You must provide a `reference_product_id` so that we can identify the specific line item(s) to apply refunds against.",
-            "properties":{
-              "reference_product_id":{
+            "properties": {
+              "reference_product_id": {
                 "type": "string",
                 "description": "The ID of the product to apply refunds against. We will attempt to find the line item from the original transaction based on this `reference_product_id`.",
                 "example": "p-1233543"
               },
-              "reference_line_item_id":{
+              "reference_line_item_id": {
                 "type": "string",
                 "description": "This **optional** attribute is the ID of the line item from your system. It will be used only for reporting.",
                 "example": "line_123456789"
               },
-              "sale_amount_refunded":{
+              "sale_amount_refunded": {
                 "type": "number",
                 "description": "The amount of the sale that was refunded to the customer.",
                 "example": -200
               },
-              "quantity_refunded":{
+              "quantity_refunded": {
                 "type": "number",
                 "description": "The quantity of this product being refunded.",
                 "example": 2
               },
-              "tax_amount_refunded":{
+              "tax_amount_refunded": {
                 "type": "number",
                 "description": "The amount of the tax that was refunded to the customer.",
                 "example": -14
               }
             },
-            "required": ["reference_product_id", "sale_amount_refunded", "tax_amount_refunded"]
-            
+            "required": [
+              "reference_product_id",
+              "sale_amount_refunded",
+              "tax_amount_refunded"
+            ]
           }
         },
         "required": ["transaction_id", "type", "refund_processed_at"]
@@ -728,7 +726,11 @@
             }
           }
         },
-        "required": ["customer_currency_code", "tax_included_in_amount","line_items"]
+        "required": [
+          "customer_currency_code",
+          "tax_included_in_amount",
+          "line_items"
+        ]
       },
       "Address": {
         "type": "object",
@@ -812,7 +814,7 @@
               "$ref": "#/components/schemas/TransactionLineItem"
             }
           },
-           "tax_included_in_amount": {
+          "tax_included_in_amount": {
             "type": "boolean",
             "example": true
           },
@@ -843,8 +845,7 @@
       "TransactionLineItem": {
         "type": "object",
         "properties": {
-          
-          "product":{
+          "product": {
             "type": "object",
             "properties": {
               "reference_product_name": {
