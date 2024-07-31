@@ -280,7 +280,7 @@
                     "refunds": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/RefundResponse"
+                        "$ref": "#/components/schemas/RefundForTransactionResponse"
                       }
                     }
                   }
@@ -608,6 +608,37 @@
             "type": "string",
             "description": "This will be either `'full'` or `'partial'`.",
             "example": "full"
+          },
+          "testmode": {
+            "type": "boolean",
+            "description": "This will be either `true` or `false`.",
+            "example": "false"
+          },
+          "refund_processed_at": {
+            "type": "number",
+            "description": "Epoch datetime representing the date and time the refund was made.",
+            "example": 1714787673
+          },
+          "line_items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RefundTransactionLineItem"
+            }
+          }
+        }
+      },
+      "RefundForTransactionResponse": {
+        "type": "object",
+        "properties": {
+          "refund_id": {
+            "type": "string",
+            "description": "The ID of the refund. If you need to `reverse` this refund, you will be required to reference this id.",
+            "example": "ref_tr_123456789"
+          },
+          "object": {
+            "type": "string",
+            "description": "The type of object: `tax.refund`.",
+            "example": "tax.refund"
           },
           "testmode": {
             "type": "boolean",
