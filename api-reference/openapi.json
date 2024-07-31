@@ -379,7 +379,18 @@
     },
     "/tax/products": {
       "get": {
-        "description": "Retrieve the list of all products.",
+        "description": "Retrieve the list of all products. You can also paginate this endpoint by providing a cursor parameter which should be the ID of the last product retrieved in the previous request.",
+        "parameters": [
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The product ID to start pagination from. This is the last product ID retrieved from the previous list request. An example looks like `/tax/products?cursor=p-20506`"
+          }
+        ],
         "responses": {
           "200": {
             "description": "List of products",
@@ -392,6 +403,11 @@
                       "type": "string",
                       "description": "The request ID of the list request.",
                       "example": "req_172202248511336956665-8ad3-4afc-8aef-3038c5204cec"
+                    },
+                    "last_product_id": {
+                      "type": "string",
+                      "description": "The ID of the last product returned in the response. This can be used as a cursor for pagination.",
+                      "example": "p-20507"
                     },
                     "products": {
                       "type": "array",
@@ -406,6 +422,7 @@
                     "summary": "Multiple products example",
                     "value": {
                       "request_id": "req_172202248511336956665-8ad3-4afc-8aef-3038c5204cec",
+                      "last_product_id": "p-20507",
                       "products": [
                         {
                           "object": "tax.product",
