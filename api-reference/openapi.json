@@ -427,8 +427,8 @@
                         {
                           "object": "tax.product",
                           "reference_product_id": "p-20506",
-                          "reference_product_name": "Product 100",
-                          "product_category": "1",
+                          "reference_product_name": "Red T-Shirt",
+                          "product_category": "CLOTHING",
                           "created_at": 1721951003,
                           "updated_at": 1721951003,
                           "testmode": true
@@ -436,8 +436,8 @@
                         {
                           "object": "tax.product",
                           "reference_product_id": "p-20507",
-                          "reference_product_name": "Product 101",
-                          "product_category": "1",
+                          "reference_product_name": "Blue T-Shirt",
+                          "product_category": "CLOTHING",
                           "created_at": 1721951003,
                           "updated_at": 1721951003,
                           "testmode": true
