@@ -990,11 +990,6 @@
       "ProductResponse": {
         "type": "object",
         "properties": {
-          "request_id": {
-            "type": "string",
-            "description": "The request ID of the create request.",
-            "example": "req_1721782604158421ac581-3dc8-4879-a7ad-670eebee81e0"
-          },
           "object": {
             "type": "string",
             "description": "The type of object: `tax.product`.",
