@@ -11,11 +11,10 @@ The Tax Engine API is set up to be flexible with respect to handling currencies.
 
 ## Significant Digits
 
-When submitting financial amounts, ensure that they are provided in the full decimal denominated representation for the respective currency.
-For instance, in currencies like **Dollars** or **Euros**, amounts should be submitted with two decimal places (e.g., `25.99`).
+When submitting financial amounts, ensure that they are provided in the smallest possible denominated representation for the respective currency.
+For instance, in currencies like **Dollars** or **Euros**, amounts should be submitted as full number "cents" with zero decimal places (e.g., the amount **$25.99** should be sent as `2599`).
 
-In contrast, for currencies such as **Iranian Rial** or **Kuwaiti Dinar**,
-which use three decimal places, amounts should be submitted with three decimal places (e.g., `25.999`). This ensures accurate processing and representation of financial amounts in our tax engine.
+Likewise, for currencies such as **Iranian Rial** or **Kuwaiti Dinar**, amounts should be submitted as full number "cents" with zero decimal places (e.g., the amount **25,999 Iranian Rials** should be sent as `25999`). This ensures accurate processing and representation of financial amounts in our tax engine.
 
 ## Exchange Rates
 
