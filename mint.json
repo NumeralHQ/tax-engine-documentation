@@ -49,7 +49,8 @@
       "group": "Essentials",
       "pages": [
         "essentials/api-keys",
-        "essentials/product-categories"
+        "essentials/product-categories",
+        "essentials/currencies"
       ]
     },
     {

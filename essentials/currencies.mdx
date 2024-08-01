@@ -1,0 +1,23 @@
+---
+title: "Currency"
+icon: "building-columns"
+---
+
+The Tax Engine API is set up to be flexible with respect to handling currencies. We support tracking the currencies used for:
+
+- `Customer Currency`: The curency used in the output of tax calculations on your cart page. This is what your customers see when interacting with your checkout or payment experence.
+- `Filing Currency`: The currency used for filing taxes. This will be the currency used to file in the tax jurisdiction responsible for the specific transaction. We will determine this currency based on the country code for the transaction.
+- `Functional Currency`: The currency used for reporting and dashboarding. We allow you to set your preferred currency for viewing your transactions and various reports in your dashboard.
+
+## Significant Digits
+
+When submitting financial amounts, ensure that they are provided in the full decimal denominated representation for the respective currency.
+For instance, in currencies like **Dollars** or **Euros**, amounts should be submitted with two decimal places (e.g., `25.99`).
+
+In contrast, for currencies such as **Iranian Rial** or **Kuwaiti Dinar**,
+which use three decimal places, amounts should be submitted with three decimal places (e.g., `25.999`). This ensures accurate processing and representation of financial amounts in our tax engine.
+
+## Exchange Rates
+
+Once per day, we will reconcile all `transactions` that were created in the last 24 hours, and record the exchange rate(s) for that day.
+This ensures that all of our intra-currency conversions happen using the correct exchange rate for that particular transaction.
