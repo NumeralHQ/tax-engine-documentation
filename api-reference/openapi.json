@@ -272,11 +272,6 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "request_id": {
-                      "type": "string",
-                      "description": "The request ID of the list request.",
-                      "example": "req_172202248511336956665-8ad3-4afc-8aef-3038c5204cec"
-                    },
                     "refunds": {
                       "type": "array",
                       "items": {
@@ -399,11 +394,6 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "request_id": {
-                      "type": "string",
-                      "description": "The request ID of the list request.",
-                      "example": "req_172202248511336956665-8ad3-4afc-8aef-3038c5204cec"
-                    },
                     "last_product_id": {
                       "type": "string",
                       "description": "The ID of the last product returned in the response. This can be used as a cursor for pagination.",
@@ -421,7 +411,6 @@
                   "multipleProducts": {
                     "summary": "Multiple products example",
                     "value": {
-                      "request_id": "req_172202248511336956665-8ad3-4afc-8aef-3038c5204cec",
                       "last_product_id": "p-20507",
                       "products": [
                         {
@@ -533,11 +522,7 @@
       "TransactionResponse": {
         "type": "object",
         "properties": {
-          "request_id": {
-            "type": "string",
-            "description": "The request ID of the create request.",
-            "example": "req_1721782604158421ac581-3dc8-4879-a7ad-670eebee81e0"
-          },
+
           "transaction_id": {
             "type": "string",
             "description": "The ID of the transaction. If you need to refund this transaction, you will be required to reference this id.",
@@ -1063,11 +1048,6 @@
       "DeleteTransactionResponse": {
         "type": "object",
         "properties": {
-          "request_id": {
-            "type": "string",
-            "description": "The request ID of the delete request.",
-            "example": "req_1721782604158421ac581-3dc8-4879-a7ad-670eebee81e0"
-          },
           "object": {
             "type": "string",
             "description": "The type of object deleted.",
@@ -1083,11 +1063,6 @@
       "DeleteProductResponse": {
         "type": "object",
         "properties": {
-          "request_id": {
-            "type": "string",
-            "description": "The request ID of the delete request.",
-            "example": "req_1721782604158421ac581-3dc8-4879-a7ad-670eebee81e0"
-          },
           "object": {
             "type": "string",
             "description": "The type of object deleted.",
