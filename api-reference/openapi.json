@@ -174,7 +174,7 @@
         }
       }
     },
-    "/tax/transaction/{transaction_id}": {
+    "/tax/transactions/{transaction_id}": {
       "get": {
         "description": "Retrieve the details of a specific transaction using its ID.",
         "parameters": [
@@ -250,7 +250,7 @@
         }
       }
     },
-    "/tax/transaction/{transaction_id}/refunds": {
+    "/tax/transactions/{transaction_id}/refunds": {
       "get": {
         "description": "Retrieve the list of refunds for a specific transaction using its ID.",
         "parameters": [
@@ -296,7 +296,7 @@
         }
       }
     },
-    "/tax/product/{reference_product_id}": {
+    "/tax/products/{reference_product_id}": {
       "get": {
         "description": "Retrieve the details of a specific product using its ID.",
         "parameters": [
