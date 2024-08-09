@@ -1,0 +1,51 @@
+---
+title: "Create Product"
+icon: "kite"
+---
+
+### Four steps to your first transaction
+
+1. Get a TEST API key from your Numeral Dashboard
+2. **Create a product with a POST to `/tax/products`**
+3. Query a tax calculation with a POST to `/tax/calculations`
+4. Record a transaction with a POST to `/tax/transactions`
+
+## 2. Create your first product
+
+Before you request any calculations, you'll need to create a categorized product to calculate against.
+This makes sure that you and your business are compliant anytime you collect tax.
+
+```cURL cURL
+curl --request POST \
+  --url https://api.numeralhq.com/tax/products \
+  --header 'Authorization: Bearer <token>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "reference_product_id": "test-p-01",
+  "reference_product_name": "Test Product",
+  "product_category": "GENERAL_MERCHANDISE"
+}' | json_pp
+```
+
+Take the API key you generated in Step 1, and put it in place of `<token>` in the above cURL expression.
+Copy that into your terminal, and hit enter.
+You should receive a response that looks like this:
+
+```cURL cURL
+{
+  "object": "tax.product",
+  "reference_product_id": "test-p-01",
+  "reference_product_name": "Test Product",
+  "product_category": "GENERAL_MERCHANDISE",
+  "created_at": 1721694425,
+  "updated_at": 1721694425,
+  "testmode": "true"
+}
+```
+
+You should see this new product also show up in your Numeral dashboard under the 'Products' tab.
+
+Before you start creating products for production, learn more about what `products` are [on this page](/objects/products), and get the complete documentation for creating them on [this page](/api-reference/endpoint/products).
+Also, anytime you create a product, it will need a category. In this quickstart, we categorized our test product as `GENERAL_MERCHANDISE`. Check out our full categorization taxonomy on [this page](/essentials/product-categories).
+
+Now that you've set up a product, you'll be able to calculate taxes against it. In production, this means you'll be able to charge taxes as checkout. Using this test product, let's see how to get a tax calculation!

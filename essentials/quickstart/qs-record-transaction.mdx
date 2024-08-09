@@ -1,0 +1,94 @@
+---
+title: "Record Transaction"
+icon: "paper-plane"
+---
+
+### Four steps to your first transaction
+
+1. Get a TEST API key from your Numeral Dashboard
+2. Create a product with a POST to `/tax/products`
+3. Query a tax calculation with a POST to `/tax/calculations`
+4. **Record a transaction with a POST to `/tax/transactions`**
+
+## 4. Record your first transaction
+
+After you've presented the tax information to your customer and they complete the purchase, you'll want to record that transaction with Numeral. When you POST a `transaction`, that lets us know that you actually made a sale. We'll make a record of it and include that sale when it comes time to file your taxes with the state.
+
+If you aren't collecting / filing taxes in the state you sold into, we'll still keep track of the sale to make sure we can alert you when you cross nexus and need to begin collecting taxes in the state.
+
+To record a transaction, you'll send us the `calculation_id` you recieved in the above step, alongside an order_id and a timestamp. For this test, don't worry about making an accurate timestemp. Using the `calculation_id`, we'll find the information you already sent in the calculation step and record it as a completed transaction.
+
+A sample you can use to test with is below - make sure to replace the `calculation_id` with what you recieved in step 3, and, of course, `<token>` with the API Key you've been using.
+
+```cURL cURL
+curl --request POST \
+  --url https://api.numeralhq.com/tax/transactions \
+  --header 'Authorization: Bearer <token>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "calculation_id": "<your_calculation_id>",
+  "reference_order_id": "test_order_1",
+  "transaction_processed_at": 1714787673
+}' | json_pp
+```
+
+You should see a response that looks like this
+
+```cURL cURL
+{
+  "testmode": true,
+  "transaction_id": "tr_1723163605154d1c0eae5-704e-402b-bcb8-35067739ed47",
+  "object": "tax.transaction",
+  "calculation_id": "<your calculation id>",
+  "filing_currency_code": "USD",
+  "customer_currency_code": "USD",
+  "line_items": [
+    {
+      "product": {
+        "reference_line_item_id": "625",
+        "reference_product_id": "test-p-01",
+        "reference_product_name": "Test Product",
+        "product_tax_code": "GENERAL_MERCHANDISE"
+      },
+      "tax_jurisdictions": [
+        {
+          "tax_rate": 0.0025,
+          "rate_type": "COUNTY SALES TAX",
+          "jurisdiction_name": "21",
+          "fee_amount": 0
+        },
+        {
+          "tax_rate": 0.06,
+          "rate_type": "STATE SALES TAX",
+          "jurisdiction_name": "",
+          "fee_amount": 0
+        },
+        {
+          "tax_rate": 0.01,
+          "rate_type": "DISTRICT TAX (TAMC) (SMRT) (MPSF)",
+          "jurisdiction_name": "994",
+          "fee_amount": 0
+        },
+        {
+          "tax_rate": 0.01,
+          "rate_type": "LOCAL SALES TAX",
+          "jurisdiction_name": "21",
+          "fee_amount": 0
+        }
+      ],
+      "tax_amount": 165,
+      "amount_excluding_tax": 2000,
+      "amount_including_tax": 2165,
+      "quantity": 1
+    }
+  ],
+  "reference_order_id": "order_test_1",
+  "transaction_processed_at": 1714787673
+}
+```
+
+We return most of the information around the transaction to make sure you can present it as needed on your confirmation page. In production, you'll want to keep track of the `transaction_id` in order to look up the transaction info down the line or let us know about any refunds we should account for.
+
+For now, though, you can see the successful transaction in the Numeral dashboard under the 'Transactions' tab. Congratulations! You've recorded a sale end to end with the Numeral API.
+
+The Numeral API doesn't end there. As you begin implementation, make sure to read through the rest of our documentation to understand the variety of features on each of our endpoints. We particularly encourage users to rigorously test the product [creation](/api-reference/endpoint/products) and [deletion](/api-reference/endpoint/delete_product) flows, as well as the variety of ways we can help you handle [refunds](/api-reference/endpoint/refunds).

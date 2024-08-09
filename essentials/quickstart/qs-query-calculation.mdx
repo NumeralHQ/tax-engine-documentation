@@ -1,0 +1,125 @@
+---
+title: "Query Calculation"
+icon: "hashtag"
+---
+
+### Four steps to your first transaction
+
+1. Get a TEST API key from your Numeral Dashboard
+2. Create a product with a POST to `/tax/products`
+3. **Query a tax calculation with a POST to `/tax/calculations`**
+4. Record a transaction with a POST to `/tax/transactions`
+
+## 3. Query your first tax calculation
+
+In this step, we'll use the `/tax/calculation` endpoint to get our first tax calculation. As you integrate with your checkout flow, you'll make this API call in order to present accurate tax information to the customer before they purchase.
+
+Here's an example cURL snippet you can use to hit the API. As above, you'll need to replace `<token>` with the API key you generated in step 1.
+
+```cURL cURL
+curl --request POST \
+  --url https://api.numeralhq.com/tax/calculations \
+  --header 'Authorization: Bearer <token>' -H "X-PrettyPrint:1" \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "customer": {
+    "address": {
+      "address_line_1": "798 Redwood Hwy",
+      "address_city": "Mill Valley",
+      "address_province": "CA",
+      "address_postal_code": "94941",
+      "address_country": "US",
+      "address_type": "shipping"
+    }
+  },
+  "order_details": {
+    "customer_currency_code": "USD",
+    "tax_included_in_amount": false,
+    "line_items": [
+      {
+        "reference_line_item_id": "line_123456789",
+        "reference_product_id": "test-p-01",
+        "amount": 2000,
+        "quantity": 1
+      }
+    ]
+  }
+}' | json_pp
+```
+
+Let's break down the important parts of this query.
+First, is the `customer` section. Here, you'll include the address. In almost all cases, tax rates will be charged based on the address of the purchaser. In your checkout flow, you'll be able to hit our API after your customer inputs their address information.
+
+Next, you'll need to share some `order_details` to make sure the correct amount of tax is calculated. Within this is an array of `line_items`. Breaking out the order by each `line_item` ensures that you are only charging tax on products that need it.
+
+You'll note that we are using the same `reference_product_id` that we created in step 2. If you use a different `product_id` that hasn't been created yet, you'll get an error.
+
+One last thing to note is that the `amount` provided is 2000. All currencies at Numeral are in the currencies base denomination. As this transaction is in USD, `"amount": 2000` indicates this item is sold for 2000 _pennies_, or $20.00.
+
+You'll get a response that looks something like this:
+
+```cURL cURL
+{
+   "calculation_id" : "calc_1723161922573fea429d8-f237-41f0-8467-bf860404d5a9",
+   "customer_currency_code" : "USD",
+   "expires_at" : 1723248322,
+   "line_items" : [
+      {
+         "amount_excluding_tax" : 2000,
+         "amount_including_tax" : 2165,
+         "product" : {
+            "product_tax_code" : "GENERAL_MERCHANDISE",
+            "reference_line_item_id" : "line_123456789",
+            "reference_product_id" : "test-p-01",
+            "reference_product_name" : "Test Product"
+         },
+         "quantity" : 1,
+         "tax_amount" : 165,
+         "tax_jurisdictions" : [
+            {
+               "fee_amount" : 0,
+               "jurisdiction_name" : "21",
+               "rate_type" : "COUNTY SALES TAX",
+               "tax_rate" : 0.0025
+            },
+            {
+               "fee_amount" : 0,
+               "jurisdiction_name" : "",
+               "rate_type" : "STATE SALES TAX",
+               "tax_rate" : 0.06
+            },
+            {
+               "fee_amount" : 0,
+               "jurisdiction_name" : "994",
+               "rate_type" : "DISTRICT TAX (TAMC) (SMRT) (MPSF)",
+               "tax_rate" : 0.01
+            },
+            {
+               "fee_amount" : 0,
+               "jurisdiction_name" : "21",
+               "rate_type" : "LOCAL SALES TAX",
+               "tax_rate" : 0.01
+            }
+         ]
+      }
+   ],
+   "object" : "tax.calculation",
+   "tax_included_in_amount" : false,
+   "testmode" : true,
+   "total_amount_excluding_tax" : 2000,
+   "total_amount_including_tax" : 2165,
+   "total_tax_amount" : 165
+}
+```
+
+You can see that this address and product combination is subject to a few different sales taxes. There is the state sales tax of 6% as well as a few additional county, local, and special district taxes.
+
+You can see the tax breakdown for each `line_item` in addition to the total tax for the entire order. Remember, Numeral uses the base denomination of currencies for numbers, so `"total_tax_amount" : 165` indicates 165 pennies, or $1.65 of tax.
+
+Additionally, you can know that the calculation was successful by checking out the 'Logs' tab in your Numeral dashboard.
+
+In your production checkout flow, you'll probably want to present some of this tax information to your customer before they make a purchase. In most cases, it'll just be the order level `total_tax_amount` and the `toal_amount_including_tax`. However, if you want to present more detail around the tax calculation, we make sure to give you all the information you might need.
+
+More information around making a calculation can be found at [this page](/api-reference/endpoint/calculations)
+
+Make note of the unique `calculation_id` that you recieved. We'll need it in the next step, where you log a transaction for Numeral to file.
