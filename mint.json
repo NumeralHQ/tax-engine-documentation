@@ -41,13 +41,21 @@
   "navigation": [
     {
       "group": "Get Started",
-      "pages": [
-        "introduction"
-      ]
+      "pages": ["introduction"]
     },
     {
       "group": "Essentials",
       "pages": [
+        {
+          "group": "Quickstart Guide",
+          "pages": [
+            "essentials/quickstart/quickstart",
+            "essentials/quickstart/qs-get-api-keys",
+            "essentials/quickstart/qs-create-product",
+            "essentials/quickstart/qs-query-calculation",
+            "essentials/quickstart/qs-record-transaction"
+          ]
+        },
         "essentials/api-keys",
         "essentials/product-categories",
         "essentials/currencies"
@@ -63,9 +71,7 @@
     },
     {
       "group": "API Documentation",
-      "pages": [
-        "api-reference/introduction"
-      ]
+      "pages": ["api-reference/introduction"]
     },
     {
       "group": "Endpoint Examples",
